@@ -77,10 +77,12 @@ public class GameController {
                 System.out.print("Winner Winner Chicken Dinner !!!!\n Congrats for solving this puzzle");
             }
         }else{
+            view.display(gameState.get_current_board_shallow(), gameState.get_size());
             ((ViewGUI) view).setMoveListener(move -> {
+                view.display(gameState.get_current_board_shallow(), gameState.get_size());
+
                 gameState = playMove(move, true);
 
-                view.display(gameState.get_current_board_shallow(), gameState.get_size());
 
                 if (gameState.check_winning()) {
                     // Game over - display winning message
@@ -193,7 +195,7 @@ public class GameController {
                         continue ;
                     }
                     else if(new_board[new_x][new_y].getDestinationColor().equals("W")){
-                        new_board[new_x][new_y].setDestinationColor(new_board[new_x][new_y].getCellColor());
+                        new_board[new_x][new_y].setDestinationColor(new_board[new_x][new_y].getCellColor().toUpperCase());
                     }
                     new_colored_cells.add(new Pair<>(new_x , new_y));
                 }
