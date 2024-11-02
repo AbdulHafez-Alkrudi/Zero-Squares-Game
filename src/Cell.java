@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Cell {
     private String cellColor ; // Color of the cell occupying this cell, null if empty
     private String destinationColor; // Destination color for this cell, null if not a destination
@@ -61,5 +63,18 @@ public class Cell {
         else if(destinationColor.isEmpty()) return CellType.COLORED;
         else return CellType.COLORED_AND_DESTINATION ;
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cell cell = (Cell) o;
+        return Objects.equals(cellColor, cell.cellColor) && Objects.equals(destinationColor, cell.destinationColor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cellColor, destinationColor);
     }
 }

@@ -74,14 +74,15 @@ public class GameController {
                 String move = player.get_move();
                 gameState = playMove(move , true);
                 view.display(gameState.get_current_board_shallow(), gameState.get_size());
-                System.out.print("Winner Winner Chicken Dinner !!!!\n Congrats for solving this puzzle");
             }
+            System.out.print("Winner Winner Chicken Dinner !!!!\nCongrats for solving this puzzle");
+
         }else{
             view.display(gameState.get_current_board_shallow(), gameState.get_size());
             ((ViewGUI) view).setMoveListener(move -> {
-                view.display(gameState.get_current_board_shallow(), gameState.get_size());
 
                 gameState = playMove(move, true);
+                view.display(gameState.get_current_board_shallow(), gameState.get_size());
 
 
                 if (gameState.check_winning()) {
@@ -163,13 +164,22 @@ public class GameController {
             gameState.restart_game();
             return gameState;
         }
+        else if(move.equals("all"))
+        {
+            List<Pair<String, GameState>> allPossibleBoards = nextStates();
+            allPossibleBoards.forEach(state -> {
+                System.out.print(state.first + " : \n");
+                view.display(state.second.get_current_board_shallow(), state.second.get_size());
+            });
+           return gameState;
+        }
         GameState old_game_state = new GameState(gameState);
         GameState new_game_state = new GameState(gameState);
         List<Pair<Integer , Integer>> colored_cells = getColoredCells();
         while(!colored_cells.isEmpty())
         {
             List<Pair<Integer, Integer>> new_colored_cells = new ArrayList<>();
-            view.display(gameState.get_current_board_shallow(), gameState.get_size());
+            //view.display(gameState.get_current_board_shallow(), gameState.get_size());
             boolean restart = false ;
             for(Pair<Integer, Integer> cell : colored_cells)
             {
@@ -237,7 +247,7 @@ public class GameController {
 
         for (String move : moves) {
             GameState newState = playMove(move, false);
-            if (newState != null) {
+            if (newState != null && !Arrays.deepEquals(newState.get_current_board_shallow(), gameState.get_current_board_shallow())) {
                 nextStates.add(new Pair<>(move, newState));
             }
         }

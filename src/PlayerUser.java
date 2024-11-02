@@ -29,6 +29,7 @@ public class PlayerUser implements Player{
             case "left" -> true;
             case "right" -> true;
             case "restart" -> true;
+            case "all" -> true;
             default -> throw new InputMismatchException();
         };
     }
