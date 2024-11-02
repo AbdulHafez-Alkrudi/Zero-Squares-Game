@@ -5,32 +5,55 @@ public class GameController {
     private Player player ;
     private View view ;
 
-    public void start_game()
-    {
+    public void startGame() {
         Scanner in = new Scanner(System.in);
-        int size = take_board_size(in);
-        String[][] board = take_board(in , size);
+        int size = takeBoardSize(in);
+        String[][] board = takeBoard(in, size);
         gameState = new GameState(size, board);
 
-        // Choosing the type of the Player, User of AI :
-        System.out.println("Wanna Play or try the Search Algo :)\n1) Play\n2)Search Algo");
-        int type = in.nextInt();
-        if(type == 1)
-            player = new PlayerUser();
-        else
-            player = new PlayerAI() ;
+        // Choose the type of the player: User or AI
+        System.out.println("Do you want to Play or try the Search Algorithm?");
+        System.out.println("1) Play");
+        System.out.println("2) Search Algorithm");
+        int choice = in.nextInt();
+        in.nextLine(); // Consume the remaining newline
+        switch (choice) {
+            case 1:
+                player = new PlayerUser();
+                break;
+            case 2:
+                player = new PlayerAI();
+                break;
+            default:
+                System.out.println("Invalid choice. Defaulting to Play.");
+                player = new PlayerUser();
+                break;
+        }
 
-        System.out.println("What kind of view do you prefer:\n1)Console\n2)Console");
-        type = in.nextInt();
-        if(type == 1)
-            view = new ViewConsole();
-        else
-            view = new ViewGUI();
-        run_the_game();
+        // Choose the type of view: Console or GUI
+        System.out.println("What kind of view do you prefer?");
+        System.out.println("1) Console");
+        System.out.println("2) GUI");
+        choice = in.nextInt();
+        in.nextLine(); // Consume the remaining newline
+        switch (choice) {
+            case 1:
+                view = new ViewConsole();
+                break;
+            case 2:
+                view = new ViewGUI();
+                break;
+            default:
+                System.out.println("Invalid choice. Defaulting to Console view.");
+                view = new ViewConsole();
+                break;
+        }
+
+        runGame();
     }
     private List<Pair<Integer, Integer>> getColoredCells() {
         List<Pair<Integer, Integer>> cells = new ArrayList<>();
-        Cell[][] board = gameState.get_current_board();
+        Cell[][] board = gameState.get_current_board_shallow();
         int size = gameState.get_size();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -41,151 +64,181 @@ public class GameController {
         }
         return cells;
     }
-    public void run_the_game()
+    public void runGame()
     {
-
-
-        while(!gameState.check_winning())
+        if(view instanceof ViewConsole)
         {
-            boolean valid_move = false ;
-            String move = "";
-            while(!valid_move)
+            while(!gameState.check_winning())
             {
-                try{
-                    valid_move = true ;
-                    move = player.get_move();
-                    // If this function didn't throw an exception, the user entered a valid move
-                    gameState.check_move(0 , 0 , move);
-                } catch(InputMismatchException e) {
-                    valid_move = false;
-                    System.out.print("An error occurred: " + e.getMessage());
-                }
+                view.display(gameState.get_current_board_shallow(), gameState.get_size());
+                String move = player.get_move();
+                gameState = playMove(move , true);
+                view.display(gameState.get_current_board_shallow(), gameState.get_size());
+                System.out.print("Winner Winner Chicken Dinner !!!!\n Congrats for solving this puzzle");
             }
-            List<Pair<Integer , Integer>> colored_cells = getColoredCells();
-            while(!colored_cells.isEmpty())
-            {
+        }else{
+            ((ViewGUI) view).setMoveListener(move -> {
+                gameState = playMove(move, true);
 
-                Cell[][] current_board = new Cell[gameState.get_size()][gameState.get_size()] ;
-                Cell[][] new_board = new Cell[gameState.get_size()][gameState.get_size()];
+                view.display(gameState.get_current_board_shallow(), gameState.get_size());
 
-                Cell[][] temp = gameState.get_current_board();
-                for (int i = 0; i < gameState.get_size(); i++) {
-                    for (int j = 0; j < gameState.get_size(); j++) {
-                        // Assuming Cell has a copy constructor like `public Cell(Cell other)`
-                        current_board[i][j] = new Cell(temp[i][j]); // Create a new instance for deep copy
-                        new_board[i][j] = new Cell(temp[i][j]);
-                    }
+                if (gameState.check_winning()) {
+                    // Game over - display winning message
+                    ((ViewGUI) view).displayMessage("Winner Winner Chicken Dinner !!!!\n Congrats for solving this puzzle");
+                    ((ViewGUI) view).close();
                 }
-                List<Pair<Integer, Integer>> new_colored_cells = new ArrayList<>();
-                view.display(current_board, gameState.get_size());
-                boolean restart = false ;
-                for(Pair<Integer, Integer> cell : colored_cells)
-                {
-                    int x = cell.first , y = cell.second ;
-                    // Here I should check if the move is invalid (if we make this move we will go out of the grid), I should restart the game
-                    // else just make it
-                    if(gameState.check_move(x, y, move))
-                    {
-                        Pair<Integer , Integer> new_cell = gameState.get_next_move(x, y, move);
-                        int new_x = new_cell.first , new_y = new_cell.second ;
-                        if(!current_board[new_x][new_y].getCellColor().equals("Gray")) continue ;
-                        System.out.println("x :" + x + " y:" + y);
-                        System.out.println("new x :" + new_x + " new y:" + new_y);
-                        System.out.println(current_board[new_x][new_y].getCellColor());
-                        new_board[new_x][new_y].setCellColor(current_board[x][y].getCellColor());
-                        new_board[x][y].setCellColor("Gray");
-
-                        // Checking If I'm currently at the destination:
-                        if(new_board[new_x][new_y].arrived_to_destination())
-                        {
-                            new_board[new_x][new_y].setCellColor("Gray");
-                            new_board[new_x][new_y].setDestinationColor("");
-                            continue ;
-                        }
-                        else if(new_board[new_x][new_y].getDestinationColor().equals("W")){
-                            new_board[new_x][new_y].setDestinationColor(new_board[new_x][new_y].getCellColor());
-                        }
-                        new_colored_cells.add(new Pair<>(new_x , new_y));
-                    }
-                    else
-                    {
-                        restart = true ;
-                        break;
-                    }
-                }
-                if(restart)
-                {
-                    System.out.println("Ooops, You've made an invalid move, I'll give you another chance sweety :)");
-                    gameState.restart_game();
-                    break;
-                }
-                gameState.set_current_board(new_board);
-                if(new_colored_cells.isEmpty()) break;
-                colored_cells = new ArrayList<>();
-
-                colored_cells.addAll(new_colored_cells);
-            }
+            });
         }
-        view.display(gameState.get_current_board(), gameState.get_size());
-        System.out.print("Winner Winner Chicken Dinner !!!!\n Congrats for solving this puzzle");
+
     }
 
-    private int take_board_size(Scanner in)
-    {
+    private int takeBoardSize(Scanner in) {
         int gridSize = 0;
         while (gridSize <= 0) {
             try {
                 System.out.print("Enter grid size (n for an n x n grid): ");
                 gridSize = in.nextInt();
                 if (gridSize <= 0) {
-                    System.out.println("Grid size must be a positive integer.");
+                    throw new InputMismatchException();
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a positive integer.");
-                in.next();
+                in.next(); // Clear invalid input
             }
         }
-        in.nextLine();
+        in.nextLine(); // Consume the remaining newline
         return gridSize;
     }
-    private String[][] take_board(Scanner in, int size)
-    {
+    private String[][] takeBoard(Scanner in, int size) {
         String[][] grid = new String[size][size];
+        boolean valid = false;
 
-        boolean valid = false ;
-        while(!valid)
-        {
-            System.out.println("Please Enter The Board");
-            try{
-                valid = true ;
-                for(int i = 0 ; i < size ; i++)
-                {
+        while (!valid) {
+            System.out.println("Please enter the board:");
+            try {
+                valid = true;
+                for (int i = 0; i < size; i++) {
                     String input = in.nextLine();
-                    String[] line = input.split(" ");
-                    for(int j = 0 ; j < size ; j++)
-                    {
+                    String[] line = input.trim().split("\\s+");
+                    if (line.length != size) {
+                        throw new InputMismatchException("Each line must contain exactly " + size + " elements.");
+                    }
+                    for (int j = 0; j < size; j++) {
                         grid[i][j] = line[j];
-                        if(grid[i][j].length() == 1)
-                        {
+                        if (grid[i][j].length() == 1) {
                             char cell = grid[i][j].charAt(0);
-                            if(!Character.isAlphabetic(cell) && cell != '.' && cell != '#'){
-                                throw new InputMismatchException("Invalid input. Please enter Alphabetical chars, dots or hashes only.");
+                            if (!Character.isAlphabetic(cell) && cell != '.' && cell != '#') {
+                                throw new InputMismatchException("Invalid input. Use alphabetical chars, dots, or hashes only.");
                             }
-                        }else{
-                            char color = grid[i][j].charAt(0), destination = grid[i][j].charAt(1);
-                            if(!Character.isLowerCase(color) || !Character.isUpperCase(destination)){
-                                throw new InputMismatchException("Invalid input. Please enter Alphabetical chars, dots or hashes only.");
+                        } else if (grid[i][j].length() == 2) {
+                            char color = grid[i][j].charAt(0);
+                            char destination = grid[i][j].charAt(1);
+                            if (!Character.isLowerCase(color) || !Character.isUpperCase(destination)) {
+                                throw new InputMismatchException("Invalid input. Use lowercase for color and uppercase for destination.");
                             }
+                        } else {
+                            throw new InputMismatchException("Invalid cell format.");
                         }
-
                     }
                 }
             } catch (InputMismatchException e) {
-                valid = false ;
-                System.out.println("An error occurred : " + e.getMessage());
-                in.nextLine();
+                valid = false;
+                System.out.println("An error occurred: " + e.getMessage());
             }
         }
-        return grid ;
+        return grid;
+    }
+    private GameState playMove(String move , boolean can_restart)
+    {
+        if(move.equals("restart"))
+        {
+            if(view instanceof ViewGUI)
+            {
+                ((ViewGUI) view).displayMessage("The Game will be restarted");
+            }else{
+                System.out.println("The Game will be restarted ") ;
+            }
+            gameState.restart_game();
+            return gameState;
+        }
+        GameState old_game_state = new GameState(gameState);
+        GameState new_game_state = new GameState(gameState);
+        List<Pair<Integer , Integer>> colored_cells = getColoredCells();
+        while(!colored_cells.isEmpty())
+        {
+            List<Pair<Integer, Integer>> new_colored_cells = new ArrayList<>();
+            view.display(gameState.get_current_board_shallow(), gameState.get_size());
+            boolean restart = false ;
+            for(Pair<Integer, Integer> cell : colored_cells)
+            {
+                int x = cell.first , y = cell.second ;
+                // Here I should check if the move is invalid (if we make this move we will go out of the grid), I should restart the game
+                // else just make it
+                if(gameState.check_move(x, y, move))
+                {
+                    Pair<Integer , Integer> new_cell = gameState.get_next_move(x, y, move);
+                    int new_x = new_cell.first ;
+                    int new_y = new_cell.second ;
+                    // if the current color can't move, we'll ignore it the rest of the turn
+                    if(!gameState.get_current_board_shallow()[new_x][new_y].getCellColor().equals("Gray")) continue ;
+
+                    Cell[][] new_board = new_game_state.get_current_board_shallow();
+                    new_board[new_x][new_y].setCellColor(gameState.get_current_board_shallow()[x][y].getCellColor());
+                    new_board[x][y].setCellColor("Gray");
+                    // Checking If I'm currently at the destination:
+                    if(new_board[new_x][new_y].arrived_to_destination())
+                    {
+                        new_board[new_x][new_y].setCellColor("Gray");
+                        new_board[new_x][new_y].setDestinationColor("");
+                        continue ;
+                    }
+                    else if(new_board[new_x][new_y].getDestinationColor().equals("W")){
+                        new_board[new_x][new_y].setDestinationColor(new_board[new_x][new_y].getCellColor());
+                    }
+                    new_colored_cells.add(new Pair<>(new_x , new_y));
+                }
+                else
+                {
+                    restart = true ;
+                    break;
+                }
+            }
+            if(restart) {
+                // Here the user is playing the game, and I'll restart the game for him/her
+                if (can_restart) {
+                    if(view instanceof ViewGUI)
+                    {
+                        ((ViewGUI) view).displayMessage("Oops!! You've made an invalid move, don't worry sweety, I'll give you another chance :) ");
+                    }else{
+                        System.out.println("Oops!! You've made an invalid move, don't worry sweety, I'll give you another chance :) ") ;
+                    }
+                    new_game_state.restart_game();
+                    return new_game_state;
+                }
+                // else I'm using nextStates function and I only need the valid next moves
+                return null ;
+
+            }
+            gameState = new GameState(new_game_state);
+            if(new_colored_cells.isEmpty()) break;
+            colored_cells = new ArrayList<>();
+
+            colored_cells.addAll(new_colored_cells);
+        }
+        // I'll just return the game state to the initial state before I've done anymove
+        gameState = new GameState(old_game_state);
+        return new_game_state;
+    }
+    public List<Pair<String, GameState>> nextStates() {
+        List<Pair<String, GameState>> nextStates = new ArrayList<>();
+        String[] moves = {"up", "down", "left", "right"};
+
+        for (String move : moves) {
+            GameState newState = playMove(move, false);
+            if (newState != null) {
+                nextStates.add(new Pair<>(move, newState));
+            }
+        }
+        return nextStates;
     }
 }

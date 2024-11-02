@@ -1,7 +1,7 @@
 public class Cell {
     private String cellColor ; // Color of the cell occupying this cell, null if empty
     private String destinationColor; // Destination color for this cell, null if not a destination
-
+    enum CellType { BLOCKED, EMPTY, COLORED, DESTINATION, COLORED_AND_DESTINATION }
     public Cell()
     {
         cellColor = "Gray";
@@ -51,5 +51,15 @@ public class Cell {
             else color = cellColor + "(" + destinationColor + ")" ;
         }
         return color ;
+    }
+
+    public CellType getType()
+    {
+        if(cellColor.equals("Black")) return CellType.BLOCKED;
+        else if(cellColor.equals("Gray") && destinationColor.isEmpty()) return CellType.EMPTY;
+        else if(cellColor.equals("Gray")) return CellType.DESTINATION;
+        else if(destinationColor.isEmpty()) return CellType.COLORED;
+        else return CellType.COLORED_AND_DESTINATION ;
+
     }
 }

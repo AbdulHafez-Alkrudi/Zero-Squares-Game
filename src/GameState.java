@@ -1,5 +1,3 @@
-import com.sun.jdi.InvalidTypeException;
-
 import java.util.*;
 
 public class GameState {
@@ -61,8 +59,18 @@ public class GameState {
     }
     public GameState(GameState other)
     {
-        this.current_board = other.current_board.clone();
-        this.initial_board = other.initial_board.clone();
+        // Deep copy for current & Initial board board
+        this.current_board = new Cell[other.size][];
+        this.initial_board = new Cell[other.size][];
+        for (int i = 0; i < other.size; i++) {
+            this.current_board[i] = new Cell[other.size];
+            this.initial_board[i] = new Cell[other.size];
+            for (int j = 0; j < other.size; j++) {
+                this.current_board[i][j] = new Cell(other.current_board[i][j]); // Assuming Cell has a copy constructor
+                this.initial_board[i][j] = new Cell(other.initial_board[i][j]); // Deep copy each cell
+
+            }
+        }
         this.size = other.size;
     }
     protected void restart_game()
@@ -116,17 +124,14 @@ public class GameState {
         return true ;
     }
 
-    public Cell[][] get_current_board() {
-        /*Cell[][] res = new Cell[size][size];
-        for(int i = 0 ; i < size ; i++){
-            System.arraycopy(current_board[i], 0, res[i], 0, size);
-        }*/
+    public Cell[][] get_current_board_shallow() {
+        return current_board;
+    }
+    public Cell[][] get_current_board_deep() {
         return current_board.clone();
     }
-
-    public GameState set_current_board(Cell[][] current_board) {
+    public void set_current_board(Cell[][] current_board) {
         this.current_board = current_board.clone();
-        return this;
     }
     public int get_size() {
         return size;

@@ -9,6 +9,6 @@ public class Main {
 
 
         GameController game = new GameController();
-        game.start_game();
+        game.startGame();
     }
 }
