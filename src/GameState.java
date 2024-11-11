@@ -180,7 +180,8 @@ public class GameState {
         return playMove(move, can_restart, null);
     }
 
-    public GameState playMove(String move, boolean can_restart, View view) {
+    public GameState playMove(String move , boolean can_restart, View view)
+    {
         if (move.equals("restart")) {
             if (view instanceof ViewGUI) {
                 ((ViewGUI) view).displayMessage("The Game will be restarted");
@@ -190,77 +191,71 @@ public class GameState {
             restart_game();
             return this;
         }
-
-        GameState current_state = new GameState(this);
-        List<Pair<Integer, Integer>> colored_cells = current_state.getColoredCells();
-        while (!colored_cells.isEmpty()) {
+        GameState current_game_state = new GameState(this);
+        List<Pair<Integer , Integer>> colored_cells = getColoredCells();
+        while(!colored_cells.isEmpty())
+        {
             List<Pair<Integer, Integer>> new_colored_cells = new ArrayList<>();
-            boolean restart = false;
-            GameState new_game_state = new GameState(current_state);
-
-            for (Pair<Integer, Integer> cell : colored_cells) {
-                int x = cell.first, y = cell.second;
-                System.out.println("Color = " + current_state.get_current_board_shallow()[x][y].getCellColor() + " x = " + x + " , y = " + y);
-
-
+            GameState new_game_state = new GameState(current_game_state);
+            //view.display(gameState.get_current_board_shallow(), gameState.get_size());
+            boolean restart = false ;
+            for(Pair<Integer, Integer> cell : colored_cells)
+            {
+                int x = cell.first , y = cell.second ;
                 // Here I should check if the move is invalid (if we make this move we will go out of the grid), I should restart the game
                 // else just make it
-                if (current_state.check_move(x, y, move)) {
-                    Pair<Integer, Integer> new_cell = current_state.get_next_move(x, y, move);
-                    int new_x = new_cell.first;
-                    int new_y = new_cell.second;
+                if(current_game_state.check_move(x, y, move))
+                {
+                    Pair<Integer , Integer> new_cell = current_game_state.get_next_move(x, y, move);
+                    int new_x = new_cell.first ;
+                    int new_y = new_cell.second ;
                     // if the current color can't move, we'll ignore it the rest of the turn
-                    if (!current_state.get_current_board_shallow()[new_x][new_y].getCellColor().equals("Gray")) continue;
+                    if(!current_game_state.get_current_board_shallow()[new_x][new_y].getCellColor().equals("Gray")) continue ;
 
-                    // just creating a reference for the new board instead of writing its name
                     Cell[][] new_board = new_game_state.get_current_board_shallow();
-                    new_board[new_x][new_y].setCellColor(get_current_board_shallow()[x][y].getCellColor());
+                    new_board[new_x][new_y].setCellColor(current_game_state.get_current_board_shallow()[x][y].getCellColor());
                     new_board[x][y].setCellColor("Gray");
                     // Checking If I'm currently at the destination:
-                    if (new_board[new_x][new_y].arrived_to_destination()) {
+                    if(new_board[new_x][new_y].arrived_to_destination())
+                    {
                         new_board[new_x][new_y].setCellColor("Gray");
                         new_board[new_x][new_y].setDestinationColor("");
-                        continue;
-                    } else if (new_board[new_x][new_y].getDestinationColor().equals("W")) {
+                        continue ;
+                    }
+                    else if(new_board[new_x][new_y].getDestinationColor().equals("W")){
                         new_board[new_x][new_y].setDestinationColor(new_board[new_x][new_y].getCellColor().toUpperCase());
                     }
-                    new_colored_cells.add(new Pair<>(new_x, new_y));
-                    try {
-                        (new ViewConsole()).display(new_game_state.get_current_board_shallow(), new_game_state.get_size());
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                } else {
-                    restart = true;
+                    new_colored_cells.add(new Pair<>(new_x , new_y));
+                }
+                else
+                {
+                    restart = true ;
                     break;
                 }
             }
-
-            if (restart) {
+            if(restart) {
                 // Here the user is playing the game, and I'll restart the game for him/her
                 if (can_restart) {
-                    if (view != null && view instanceof ViewGUI) {
+                    if(view instanceof ViewGUI)
+                    {
                         ((ViewGUI) view).displayMessage("Oops!! You've made an invalid move, don't worry sweety, I'll give you another chance :) ");
-                    } else if (view == null || view instanceof ViewConsole) {
-                        System.out.println("Oops!! You've made an invalid move, don't worry sweety, I'll give you another chance :) ");
+                    }else{
+                        System.out.println("Oops!! You've made an invalid move, don't worry sweety, I'll give you another chance :) ") ;
                     }
                     new_game_state.restart_game();
                     return new_game_state;
                 }
                 // else I'm using nextStates function and I only need the valid next moves
-                return null;
+                return null ;
             }
-            System.out.println("-----------------------------------------------");
-            System.out.println("The end of the Cycle: ");
-            current_state = new GameState(new_game_state);
-            (new ViewConsole()).display(current_state.get_current_board_shallow(), current_state.get_size());
-            if (new_colored_cells.isEmpty()) break;
+
+            current_game_state = new GameState(new_game_state);
+            if(new_colored_cells.isEmpty()) break;
             colored_cells = new ArrayList<>();
 
             colored_cells.addAll(new_colored_cells);
         }
-        return current_state;
+        return current_game_state;
     }
 
 

@@ -89,7 +89,7 @@ public class GameController {
             ((ViewGUI) view).setMoveListener(move -> {
                 System.out.println("move = " + move);
                 gameState = gameState.playMove(move, true, view);
-//                view.display(gameState.get_current_board_shallow(), gameState.get_size());
+                view.display(gameState.get_current_board_shallow(), gameState.get_size());
 
 
                 if (gameState.check_winning()) {
