@@ -18,7 +18,6 @@ public class Cell {
     {
         this.cellColor = other.cellColor;
         this.destinationColor = other.destinationColor ;
-
     }
     public String getCellColor() {
         return cellColor;
@@ -62,7 +61,6 @@ public class Cell {
         else if(cellColor.equals("Gray")) return CellType.DESTINATION;
         else if(destinationColor.isEmpty()) return CellType.COLORED;
         else return CellType.COLORED_AND_DESTINATION ;
-
     }
 
     @Override

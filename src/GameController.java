@@ -3,38 +3,18 @@ import java.util.*;
 public class GameController {
     private GameState gameState ;
     private Player player ;
+    private Algorithm algorithm;
     private View view ;
+    private final Scanner in = new Scanner(System.in);
 
     public void startGame() {
-        Scanner in = new Scanner(System.in);
         int size = takeBoardSize(in);
         String[][] board = takeBoard(in, size);
         gameState = new GameState(size, board);
-
-        // Choose the type of the player: User or AI
-        System.out.println("Do you want to Play or try the Search Algorithm?");
-        System.out.println("1) Play");
-        System.out.println("2) Search Algorithm");
-        int choice = in.nextInt();
-        in.nextLine(); // Consume the remaining newline
-        switch (choice) {
-            case 1:
-                player = new PlayerUser();
-                break;
-            case 2:
-                player = new PlayerAI();
-                break;
-            default:
-                System.out.println("Invalid choice. Defaulting to Play.");
-                player = new PlayerUser();
-                break;
-        }
-
-        // Choose the type of view: Console or GUI
         System.out.println("What kind of view do you prefer?");
         System.out.println("1) Console");
         System.out.println("2) GUI");
-        choice = in.nextInt();
+        int choice = in.nextInt();
         in.nextLine(); // Consume the remaining newline
         switch (choice) {
             case 1:
@@ -44,27 +24,53 @@ public class GameController {
                 view = new ViewGUI();
                 break;
             default:
-                System.out.println("Invalid choice. Defaulting to Console view.");
-                view = new ViewConsole();
+                System.out.println("Invalid choice. Defaulting to GUI view.");
+                view = new ViewGUI();
                 break;
         }
 
-        runGame();
-    }
-    private List<Pair<Integer, Integer>> getColoredCells() {
-        List<Pair<Integer, Integer>> cells = new ArrayList<>();
-        Cell[][] board = gameState.get_current_board_shallow();
-        int size = gameState.get_size();
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (!board[i][j].getCellColor().equals("Gray") && !board[i][j].getCellColor().equals("Black")) {
-                    cells.add(new Pair<>(i, j));
-                }
-            }
+        // Choose the type of the player: User or AI
+        System.out.println("Do you want to Play or try the Search Algorithm?");
+        System.out.println("1) Play");
+        System.out.println("2) Search Algorithm");
+        choice = in.nextInt();
+        in.nextLine(); // Consume the remaining newline
+        switch (choice) {
+            case 1:
+                player = new Player();
+                runGameAsUser();
+                return ;
+            case 2:
+                runGameAsAI();
+                return ;
+            default:
+                System.out.println("Invalid choice. Defaulting to Play.");
+                player = new Player();
+                runGameAsUser();
+                break;
         }
-        return cells;
     }
-    public void runGame()
+    public void runGameAsAI(){
+        System.out.println("Which Algorithm you would like to use ?");
+        System.out.println("1) BFS");
+        System.out.println("2) DFS");
+
+        int choice = in.nextInt();
+        switch (choice){
+            case 1:
+                algorithm = new Algo_BFS();
+                break;
+            case 2:
+                algorithm = new Algo_DFS();
+                break;
+            default:
+                System.out.println("Invalid input, Defaulting the BFS");
+                algorithm = new Algo_BFS();
+                break;
+        }
+        List<String> path = algorithm.run(gameState);
+    }
+    public void runGameAsUser()
     {
         if(view instanceof ViewConsole)
         {
@@ -72,16 +78,17 @@ public class GameController {
             {
                 view.display(gameState.get_current_board_shallow(), gameState.get_size());
                 String move = player.get_move();
-                gameState = playMove(move , true);
+                gameState = gameState.playMove(move , true);
                 view.display(gameState.get_current_board_shallow(), gameState.get_size());
             }
             System.out.print("Winner Winner Chicken Dinner !!!!\nCongrats for solving this puzzle");
 
         }else{
             view.display(gameState.get_current_board_shallow(), gameState.get_size());
-            ((ViewGUI) view).setMoveListener(move -> {
 
-                gameState = playMove(move, true);
+            ((ViewGUI) view).setMoveListener(move -> {
+                System.out.println("move = " + move);
+                gameState = gameState.playMove(move, true, view);
                 view.display(gameState.get_current_board_shallow(), gameState.get_size());
 
 
@@ -91,6 +98,7 @@ public class GameController {
                     ((ViewGUI) view).close();
                 }
             });
+
         }
 
     }
@@ -151,106 +159,5 @@ public class GameController {
         }
         return grid;
     }
-    private GameState playMove(String move , boolean can_restart)
-    {
-        if(move.equals("restart"))
-        {
-            if(view instanceof ViewGUI)
-            {
-                ((ViewGUI) view).displayMessage("The Game will be restarted");
-            }else{
-                System.out.println("The Game will be restarted ") ;
-            }
-            gameState.restart_game();
-            return gameState;
-        }
-        else if(move.equals("all"))
-        {
-            List<Pair<String, GameState>> allPossibleBoards = nextStates();
-            allPossibleBoards.forEach(state -> {
-                System.out.print(state.first + " : \n");
-                view.display(state.second.get_current_board_shallow(), state.second.get_size());
-            });
-           return gameState;
-        }
-        GameState old_game_state = new GameState(gameState);
-        GameState new_game_state = new GameState(gameState);
-        List<Pair<Integer , Integer>> colored_cells = getColoredCells();
-        while(!colored_cells.isEmpty())
-        {
-            List<Pair<Integer, Integer>> new_colored_cells = new ArrayList<>();
-            //view.display(gameState.get_current_board_shallow(), gameState.get_size());
-            boolean restart = false ;
-            for(Pair<Integer, Integer> cell : colored_cells)
-            {
-                int x = cell.first , y = cell.second ;
-                // Here I should check if the move is invalid (if we make this move we will go out of the grid), I should restart the game
-                // else just make it
-                if(gameState.check_move(x, y, move))
-                {
-                    Pair<Integer , Integer> new_cell = gameState.get_next_move(x, y, move);
-                    int new_x = new_cell.first ;
-                    int new_y = new_cell.second ;
-                    // if the current color can't move, we'll ignore it the rest of the turn
-                    if(!gameState.get_current_board_shallow()[new_x][new_y].getCellColor().equals("Gray")) continue ;
 
-                    Cell[][] new_board = new_game_state.get_current_board_shallow();
-                    new_board[new_x][new_y].setCellColor(gameState.get_current_board_shallow()[x][y].getCellColor());
-                    new_board[x][y].setCellColor("Gray");
-                    // Checking If I'm currently at the destination:
-                    if(new_board[new_x][new_y].arrived_to_destination())
-                    {
-                        new_board[new_x][new_y].setCellColor("Gray");
-                        new_board[new_x][new_y].setDestinationColor("");
-                        continue ;
-                    }
-                    else if(new_board[new_x][new_y].getDestinationColor().equals("W")){
-                        new_board[new_x][new_y].setDestinationColor(new_board[new_x][new_y].getCellColor().toUpperCase());
-                    }
-                    new_colored_cells.add(new Pair<>(new_x , new_y));
-                }
-                else
-                {
-                    restart = true ;
-                    break;
-                }
-            }
-            if(restart) {
-                // Here the user is playing the game, and I'll restart the game for him/her
-                if (can_restart) {
-                    if(view instanceof ViewGUI)
-                    {
-                        ((ViewGUI) view).displayMessage("Oops!! You've made an invalid move, don't worry sweety, I'll give you another chance :) ");
-                    }else{
-                        System.out.println("Oops!! You've made an invalid move, don't worry sweety, I'll give you another chance :) ") ;
-                    }
-                    new_game_state.restart_game();
-                    return new_game_state;
-                }
-                // else I'm using nextStates function and I only need the valid next moves
-                return null ;
-
-            }
-            gameState = new GameState(new_game_state);
-            if(new_colored_cells.isEmpty()) break;
-            colored_cells = new ArrayList<>();
-
-            colored_cells.addAll(new_colored_cells);
-        }
-        // I'll just return the game state to the initial state before I've done anymove
-        gameState = new GameState(old_game_state);
-        return new_game_state;
-    }
-    public List<Pair<String, GameState>> nextStates() {
-        List<Pair<String, GameState>> nextStates = new ArrayList<>();
-        String[] moves = {"up", "down", "left", "right"};
-
-        for (String move : moves) {
-            GameState newState = playMove(move, false);
-            if (newState != null && !Arrays.deepEquals(newState.get_current_board_shallow(), gameState.get_current_board_shallow())) {
-                nextStates.add(new Pair<>(move, newState));
-            }
-        }
-        return nextStates;
-    }
 }
