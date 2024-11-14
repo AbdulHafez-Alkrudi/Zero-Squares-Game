@@ -191,7 +191,15 @@ public class GameState {
             restart_game();
             return this;
         }
-        GameState current_game_state = new GameState(this);
+        else if(move.equals("all"))
+        {
+            List<Pair<String, GameState>> allPossibleBoards = nextStates();
+            allPossibleBoards.forEach(state -> {
+                System.out.print(state.first + " : \n");
+                view.display(state.second.get_current_board_shallow(), state.second.get_size());
+            });
+            return this;
+        }        GameState current_game_state = new GameState(this);
         List<Pair<Integer , Integer>> colored_cells = getColoredCells();
         while(!colored_cells.isEmpty())
         {
@@ -282,15 +290,14 @@ public class GameState {
         if (o == null || getClass() != o.getClass()) return false;
         GameState gameState = (GameState) o;
         return size == gameState.size &&
-                Arrays.deepEquals(current_board, gameState.current_board) &&
-                Arrays.deepEquals(initial_board, gameState.initial_board);
+                Arrays.deepEquals(current_board, gameState.current_board) ;
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(size);
         result = 31 * result + Arrays.deepHashCode(current_board);
-        result = 31 * result + Arrays.deepHashCode(initial_board);
+        //result = 31 * result + Arrays.deepHashCode(initial_board);
         return result;
     }
 

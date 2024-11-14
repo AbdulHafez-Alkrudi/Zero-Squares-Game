@@ -53,7 +53,8 @@ public class GameController {
     public void runGameAsAI(){
         System.out.println("Which Algorithm you would like to use ?");
         System.out.println("1) BFS");
-        System.out.println("2) DFS");
+        System.out.println("2) Parallel BFS");
+        System.out.println("3) DFS");
 
         int choice = in.nextInt();
         switch (choice){
@@ -61,14 +62,37 @@ public class GameController {
                 algorithm = new Algo_BFS();
                 break;
             case 2:
-                algorithm = new Algo_DFS();
+                algorithm = new Algo_BFS_Parallel();
                 break;
+            case 3:
+                algorithm = new Algo_DFS();
             default:
                 System.out.println("Invalid input, Defaulting the BFS");
                 algorithm = new Algo_BFS();
                 break;
         }
-        List<String> path = algorithm.run(gameState);
+        long startTime = System.nanoTime();
+        for(int i = 0 ; i < 10 ; i++) algorithm.run(gameState, view);
+
+        List<String> path = algorithm.run(gameState, view);
+        long endTime = System.nanoTime();
+        long duration = endTime - startTime; // in nanoseconds
+        double durationInSeconds = duration / 1_000_000_000.0;
+        System.out.println("Execution Time: " + durationInSeconds + " seconds");
+        path.forEach(move -> {
+            try {
+                System.out.println(move);
+                gameState = gameState.playMove(move , true , view);
+                view.display(gameState.get_current_board_shallow(), gameState.get_size());
+                Thread.sleep(400);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+
+
+
     }
     public void runGameAsUser()
     {
@@ -78,7 +102,7 @@ public class GameController {
             {
                 view.display(gameState.get_current_board_shallow(), gameState.get_size());
                 String move = player.get_move();
-                gameState = gameState.playMove(move , true);
+                gameState = gameState.playMove(move , true , view);
                 view.display(gameState.get_current_board_shallow(), gameState.get_size());
             }
             System.out.print("Winner Winner Chicken Dinner !!!!\nCongrats for solving this puzzle");
