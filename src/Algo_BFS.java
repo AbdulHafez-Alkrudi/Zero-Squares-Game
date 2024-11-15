@@ -46,6 +46,7 @@ public class Algo_BFS implements Algorithm{
         }
 
         Collections.reverse(path);
+        System.out.println("Number of tried grids to find the solution: " + vis.size());
         return path ;
     }
 

@@ -57,6 +57,7 @@ public class GameController {
         System.out.println("3) DFS");
 
         int choice = in.nextInt();
+        in.nextLine(); // Consume the remaining newline
         switch (choice){
             case 1:
                 algorithm = new Algo_BFS();
@@ -66,25 +67,26 @@ public class GameController {
                 break;
             case 3:
                 algorithm = new Algo_DFS();
+                break;
             default:
-                System.out.println("Invalid input, Defaulting the BFS");
-                algorithm = new Algo_BFS();
+                System.out.println("Invalid input, Defaulting the DFS");
+                algorithm = new Algo_DFS();
                 break;
         }
         long startTime = System.nanoTime();
-        for(int i = 0 ; i < 10 ; i++) algorithm.run(gameState, view);
-
         List<String> path = algorithm.run(gameState, view);
         long endTime = System.nanoTime();
         long duration = endTime - startTime; // in nanoseconds
         double durationInSeconds = duration / 1_000_000_000.0;
         System.out.println("Execution Time: " + durationInSeconds + " seconds");
+        System.out.println("Number of moves: " + path.size());
+
         path.forEach(move -> {
             try {
                 System.out.println(move);
                 gameState = gameState.playMove(move , true , view);
                 view.display(gameState.get_current_board_shallow(), gameState.get_size());
-                Thread.sleep(400);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
