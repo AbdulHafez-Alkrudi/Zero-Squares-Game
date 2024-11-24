@@ -4,9 +4,9 @@ public class GameState {
 
 
     private int size ;
-    private Cell[][] current_board;
-    private Cell[][] initial_board;
-
+    private Integer hash;
+    private Cell[][] currentBoard;
+    public List<Pair<Integer , Integer>> coloredCells , destinationCells;
     /*
     *  Cells Representation in the Grid:
     *  1- Blocked Cells: #
@@ -24,61 +24,46 @@ public class GameState {
     private static final int DOWN = 1 ;
     private static final int RIGHT = 2 ;
     private static final int LEFT = 3 ;
-    public GameState(){}
-    public GameState(int size , String[][] initialGrid) {
+
+    public static int numberOfCreatedObjects = 0;
+    public GameState(){
+        numberOfCreatedObjects++;
+    }
+    public GameState(int size , Cell[][] initialBoard) {
+        numberOfCreatedObjects++;
         this.size = size ;
-        this.current_board = new Cell[size][size] ;
-        this.initial_board = new Cell[size][size] ;
+        currentBoard = new Cell[size][size] ;
         for(int i = 0 ; i < size ; i++)
         {
-            for(int j = 0 ; j < size ; j++)
-            {
-                char cell = initialGrid[i][j].charAt(0) ;
-                current_board[i][j] = new Cell() ;
-                if (Character.isUpperCase(cell)) {
-                    current_board[i][j].setDestinationColor(Character.toString(cell));
-                }
-                else if(Character.isLowerCase(cell))
-                {
-                    current_board[i][j].setCellColor(Character.toString(cell));
-                    if(initialGrid[i][j].length() == 2)
-                    {
-                        current_board[i][j].setDestinationColor(Character.toString(initialGrid[i][j].charAt(1)));
-                    }
-                }else if(cell == '#'){
-                    current_board[i][j].setCellColor("Black");
-                }else{
-                    current_board[i][j].setCellColor("Gray");
-                }
-                initial_board[i][j] = current_board[i][j];
-            }
+            System.arraycopy(initialBoard[i], 0, currentBoard[i], 0, size);
         }
-
+        coloredCells = getColoredCells();
+        destinationCells = getDestinationCells();
     }
     public GameState(GameState other)
     {
+        numberOfCreatedObjects++;
         // Deep copy for current & Initial board
-        this.current_board = new Cell[other.size][];
-        this.initial_board = new Cell[other.size][];
+        this.currentBoard = new Cell[other.size][];
         for (int i = 0; i < other.size; i++) {
-            this.current_board[i] = new Cell[other.size];
-            this.initial_board[i] = new Cell[other.size];
+            this.currentBoard[i] = new Cell[other.size];
             for (int j = 0; j < other.size; j++) {
-                this.current_board[i][j] = new Cell(other.current_board[i][j]); // Assuming Cell has a copy constructor
-                this.initial_board[i][j] = new Cell(other.initial_board[i][j]); // Deep copy each cell
-
+                this.currentBoard[i][j] = new Cell(other.currentBoard[i][j]);
             }
         }
+        coloredCells = new ArrayList<>(other.coloredCells);
+        destinationCells = new ArrayList<>(other.destinationCells);
         this.size = other.size;
     }
-    protected void restart_game()
+    protected void restart_game(Cell[][] initial_board)
     {
         for(int i = 0 ; i < size ; i++){
-            for(int j = 0 ; j < size ; j++){
-                current_board[i][j] = initial_board[i][j] ;
+            for (int j = 0; j < size; j++) {
+                this.currentBoard[i][j] = new Cell(initial_board[i][j]);
             }
         }
-
+        coloredCells = getColoredCells();
+        destinationCells = getDestinationCells();
     }
     // This function checks whether the given coordinates are valid or not
     private boolean is_valid(int x , int y)
@@ -119,7 +104,7 @@ public class GameState {
         {
             for(int j = 0 ; j < size ; j++)
             {
-                if(!Objects.equals(current_board[i][j].getCellColor(), "Black") && !Objects.equals(current_board[i][j].getCellColor(), "Gray"))
+                if(!Objects.equals(currentBoard[i][j].getCellColor(), "Black") && !Objects.equals(currentBoard[i][j].getCellColor(), "Gray"))
                 {
                     return false ;
                 }
@@ -129,7 +114,7 @@ public class GameState {
     }
 
     public Cell[][] get_current_board_shallow() {
-        return current_board;
+        return currentBoard;
     }
     public Cell[][] get_current_board_deep() {
         Cell[][] res = new Cell[size][size];
@@ -137,27 +122,17 @@ public class GameState {
         {
             for(int j = 0 ; j < size ; j++)
             {
-                res[i][j] = current_board[i][j] ;
+                res[i][j] = new Cell(currentBoard[i][j]) ;
             }
         }
         return res;
     }
     public void set_current_board(Cell[][] current_board) {
         int size = current_board.length;
-        this.current_board = new Cell[size][size];
+        this.currentBoard = new Cell[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                this.current_board[i][j] = new Cell(current_board[i][j]); // Create a new Cell instance for each element
-            }
-        }
-    }
-
-    public void set_initial_board(Cell[][] initial_board) {
-        int size = initial_board.length;
-        this.initial_board = new Cell[size][size];
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                this.initial_board[i][j] = new Cell(initial_board[i][j]); // Create a new Cell instance for each element
+                this.currentBoard[i][j] = new Cell(current_board[i][j]); // Create a new Cell instance for each element
             }
         }
     }
@@ -175,12 +150,23 @@ public class GameState {
         }
         return cells;
     }
-
-    public GameState playMove(String move, boolean can_restart) {
-        return playMove(move, can_restart, null);
+    private List<Pair<Integer, Integer>> getDestinationCells() {
+        List<Pair<Integer, Integer>> cells = new ArrayList<>();
+        Cell[][] board = get_current_board_shallow();
+        int size = get_size();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (!board[i][j].getDestinationColor().isBlank()) {
+                    cells.add(new Pair<>(i, j));
+                }
+            }
+        }
+        return cells;
     }
-
-    public GameState playMove(String move , boolean can_restart, View view)
+    public GameState playMove(String move, boolean can_restart) {
+        return playMove(move, can_restart,null,null);
+    }
+    public GameState playMove(String move , boolean can_restart, Cell[][] initialBoard, View view)
     {
         if (move.equals("restart")) {
             if (view instanceof ViewGUI) {
@@ -188,7 +174,7 @@ public class GameState {
             } else if (view instanceof ViewConsole) {
                 System.out.println("The Game will be restarted");
             }
-            restart_game();
+            restart_game(initialBoard);
             return this;
         }
         else if(move.equals("all"))
@@ -199,44 +185,66 @@ public class GameState {
                 view.display(state.second.get_current_board_shallow(), state.second.get_size());
             });
             return this;
-        }        GameState current_game_state = new GameState(this);
-        List<Pair<Integer , Integer>> colored_cells = getColoredCells();
-        while(!colored_cells.isEmpty())
+        }
+        GameState newGameState = new GameState(this);
+        Cell[][] newBoard = newGameState.currentBoard;
+        List<Pair<Integer, Integer>> ColoredCells = new LinkedList<>();
+        for(Pair<Integer, Integer> cell : coloredCells)
         {
-            List<Pair<Integer, Integer>> new_colored_cells = new ArrayList<>();
-            GameState new_game_state = new GameState(current_game_state);
-            //view.display(gameState.get_current_board_shallow(), gameState.get_size());
+            int x = cell.first ;
+            int y = cell.second;
+            if(!check_move(x , y , move)){
+                if (can_restart) {
+                    if(view instanceof ViewGUI)
+                    {
+                        ((ViewGUI) view).displayMessage("Oops!! You've made an invalid move, don't worry sweety, I'll give you another chance :) ");
+                    }else{
+                        System.out.println("Oops!! You've made an invalid move, don't worry sweety, I'll give you another chance :) ") ;
+                    }
+                    newGameState.restart_game(initialBoard);
+                    return newGameState;
+                }
+                // else I'm using nextStates function and I only need the valid next moves
+                return null ;
+            }
+            Pair<Integer , Integer> new_cell = get_next_move(x , y , move);
+            int new_x = new_cell.first ;
+            int new_y = new_cell.second;
+            if(newBoard[new_x][new_y].getCellColor().equals("Gray")){
+                ColoredCells.add(new Pair<>(x , y));
+            }
+        }
+        List<Pair<Integer, Integer>> newColoredCells = new LinkedList<>();
+        while(!ColoredCells.isEmpty())
+        {
+            newColoredCells.clear();
             boolean restart = false ;
-            for(Pair<Integer, Integer> cell : colored_cells)
+            for(Pair<Integer , Integer> cell : ColoredCells)
             {
                 int x = cell.first , y = cell.second ;
                 // Here I should check if the move is invalid (if we make this move we will go out of the grid), I should restart the game
                 // else just make it
-                if(current_game_state.check_move(x, y, move))
-                {
-                    Pair<Integer , Integer> new_cell = current_game_state.get_next_move(x, y, move);
+                if(newGameState.check_move(x , y , move)){
+                    Pair<Integer, Integer> new_cell = get_next_move(x , y , move);
                     int new_x = new_cell.first ;
                     int new_y = new_cell.second ;
                     // if the current color can't move, we'll ignore it the rest of the turn
-                    if(!current_game_state.get_current_board_shallow()[new_x][new_y].getCellColor().equals("Gray")) continue ;
-
-                    Cell[][] new_board = new_game_state.get_current_board_shallow();
-                    new_board[new_x][new_y].setCellColor(current_game_state.get_current_board_shallow()[x][y].getCellColor());
-                    new_board[x][y].setCellColor("Gray");
+                    if(!newBoard[new_x][new_y].getCellColor().equals("Gray")) continue ;
+                    newBoard[new_x][new_y].setCellColor(newBoard[x][y].getCellColor());
+                    newBoard[x][y].setCellColor("Gray");
                     // Checking If I'm currently at the destination:
-                    if(new_board[new_x][new_y].arrived_to_destination())
+                    if(newBoard[new_x][new_y].arrived_to_destination())
                     {
-                        new_board[new_x][new_y].setCellColor("Gray");
-                        new_board[new_x][new_y].setDestinationColor("");
+                        newBoard[new_x][new_y].setCellColor("Gray");
+                        newBoard[new_x][new_y].setDestinationColor("");
                         continue ;
                     }
-                    else if(new_board[new_x][new_y].getDestinationColor().equals("W")){
-                        new_board[new_x][new_y].setDestinationColor(new_board[new_x][new_y].getCellColor().toUpperCase());
+                    else if(newBoard[new_x][new_y].getDestinationColor().equals("W")){
+                        newBoard[new_x][new_y].setDestinationColor(newBoard[new_x][new_y].getCellColor().toUpperCase());
                     }
-                    new_colored_cells.add(new Pair<>(new_x , new_y));
+                    newColoredCells.add(new Pair<>(new_x , new_y));
                 }
-                else
-                {
+                else{
                     restart = true ;
                     break;
                 }
@@ -250,30 +258,61 @@ public class GameState {
                     }else{
                         System.out.println("Oops!! You've made an invalid move, don't worry sweety, I'll give you another chance :) ") ;
                     }
-                    new_game_state.restart_game();
-                    return new_game_state;
+                    newGameState.restart_game(initialBoard);
+                    return newGameState;
                 }
                 // else I'm using nextStates function and I only need the valid next moves
                 return null ;
             }
-
-            current_game_state = new GameState(new_game_state);
-            if(new_colored_cells.isEmpty()) break;
-            colored_cells = new ArrayList<>();
-
-            colored_cells.addAll(new_colored_cells);
+            if(newColoredCells.isEmpty())break;
+            ColoredCells = new ArrayList<>(newColoredCells);
         }
-        return current_game_state;
+        newGameState.coloredCells = newGameState.getColoredCells();
+        newGameState.destinationCells = newGameState.getDestinationCells();
+        return newGameState ;
     }
 
+    static public boolean every_player_has_goal(GameState state){
+        Set<String> goals = new HashSet<>();
+        int white = 0 ;
+        /*for(int i = 0 ; i < size ; i++)
+        {
+            for(int j = 0 ; j < size ; j++)
+            {
+                if(state.currentBoard[i][j].getDestinationColor().equals("W")){
+                    white++;
+                }else if(!state.currentBoard[i][j].getDestinationColor().isBlank()){
+                    goals.add(state.currentBoard[i][j].getDestinationColor());
+                }
+            }
+        }*/
+        for(Pair<Integer, Integer> goal : state.destinationCells){
+            int x = goal.first;
+            int y = goal.second;
 
+            if(state.currentBoard[x][y].getDestinationColor().equals("W")){
+                white++;
+            }else{
+                goals.add((state.currentBoard[x][y].getDestinationColor().toLowerCase()));
+            }
+        }
+        for(Pair<Integer, Integer> player : state.coloredCells)
+        {
+            int x = player.first;
+            int y = player.second;
+            if(!goals.contains(state.currentBoard[x][y].getCellColor())){
+                white--;
+            }
+        }
+        return white >= 0 ;
+    }
     public List<Pair<String, GameState>> nextStates() {
         List<Pair<String, GameState>> nextStates = new ArrayList<>();
         String[] moves = {"up", "down", "left", "right"};
 
         for (String move : moves) {
             GameState newState = playMove(move, false);
-            if (newState != null && !Arrays.deepEquals(newState.get_current_board_shallow(), get_current_board_shallow())) {
+            if (newState != null && !Arrays.deepEquals(newState.get_current_board_shallow(), get_current_board_shallow()) && every_player_has_goal(newState)) {
                 nextStates.add(new Pair<>(move, newState));
             }
         }
@@ -283,22 +322,29 @@ public class GameState {
         return size;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GameState gameState = (GameState) o;
-        return size == gameState.size &&
-                Arrays.deepEquals(current_board, gameState.current_board) ;
+        return Objects.deepEquals(currentBoard, gameState.currentBoard);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(size);
-        result = 31 * result + Arrays.deepHashCode(current_board);
-        //result = 31 * result + Arrays.deepHashCode(initial_board);
-        return result;
+        if(hash!=null) return hash;
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0;i<size;i++){
+            for(int j = 0; j<size;j++){
+                if(!currentBoard[i][j].getCellColor().equals("Gray") && !currentBoard[i][j].getCellColor().equals("Black")){
+                    sb.append(i);sb.append(j);sb.append(currentBoard[i][j].getCellColor());
+                }
+                if(!currentBoard[i][j].getDestinationColor().isBlank()){
+                    sb.append(i);sb.append(j);sb.append(currentBoard[i][j].getDestinationColor());
+                }
+            }
+        }
+        hash = sb.toString().hashCode();
+        return hash;
     }
-
 }

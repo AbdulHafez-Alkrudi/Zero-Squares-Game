@@ -3,14 +3,14 @@ import java.util.*;
 public class Algo_DFS implements Algorithm{
     @Override
     public List<String> run(GameState gameState , View view) {
-        Map<GameState, Boolean> vis = new HashMap<>();
+        HashSet<GameState> vis = new HashSet<>();
         Map<GameState, Pair<String, GameState>> parent = new HashMap<>();
         Stack<GameState> stk = new Stack<>();
         List<String> path = new LinkedList<>();
 
 
         parent.put(gameState, new Pair<>("stop", new GameState()));
-        vis.put(new GameState(gameState), true);
+        vis.add(new GameState(gameState));
         stk.add(new GameState(gameState));
 
         while(!stk.isEmpty())
@@ -24,8 +24,8 @@ public class Algo_DFS implements Algorithm{
             states.forEach(nextStatesPair -> {
                 GameState nextState = nextStatesPair.second;
                 String move = nextStatesPair.first ;
-                if(!vis.containsKey(nextState)){
-                    vis.put(nextState, true);
+                if(!vis.contains(nextState)){
+                    vis.add(nextState);
                     stk.add(nextState);
                     parent.put(nextState, new Pair<>(move, current_state));
                 }
