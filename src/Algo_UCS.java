@@ -3,7 +3,8 @@ import java.util.*;
 public class Algo_UCS implements Algorithm{
     @Override
     public List<String> run(GameState gameState, View view) {
-        Set<GameState> vis = new HashSet<>();
+
+        Map<GameState, Integer> cost = new HashMap<>();
         Map<GameState, Pair<String, GameState>> parent = new HashMap<>();
 
         PriorityQueue<Pair<Integer, GameState>> q = new PriorityQueue<>();
@@ -12,8 +13,8 @@ public class Algo_UCS implements Algorithm{
 
 
         parent.put(gameState, new Pair<>("stop", new GameState()));
-        vis.add(gameState);
-        q.add(new Pair<>(1 , gameState));
+        cost.put(gameState, 1);
+        q.add(new Pair<>(0 , gameState));
 
         int Level = 0 ;
         boolean solved = false ;
@@ -27,14 +28,15 @@ public class Algo_UCS implements Algorithm{
                 Pair<Integer, GameState> temp = q.poll();
 
                 GameState current_state = temp.second;
-                int cost = temp.first;
+                int w = temp.first;
+                if(cost.get(current_state) < w) continue ;
                 List<Pair<String, GameState>> states = current_state.nextStates();
                 for (Pair<String, GameState> nextStatesPair : states) {
                     GameState nextState = nextStatesPair.second;
                     String move = nextStatesPair.first;
-                    if (!vis.contains(nextState)) {
-                        vis.add(nextState);
-                        q.add(new Pair<>(1 , nextState));
+                    if (!cost.containsKey(nextState) || cost.get(nextState) > w + 1) {
+                        cost.put(nextState, w + 1);
+                        q.add(new Pair<>(w + 1 , nextState));
                         parent.put(nextState, new Pair<>(move, current_state));
 
                         if (nextState.check_winning()) {
@@ -44,6 +46,7 @@ public class Algo_UCS implements Algorithm{
                             break;
                         }
                     }
+
                 }
             }
         }
@@ -53,7 +56,7 @@ public class Algo_UCS implements Algorithm{
         }
 
         Collections.reverse(path);
-        System.out.println("Number of tried grids to find the solution: " + vis.size());
+        System.out.println("Number of tried grids to find the solution: " + cost.size());
         return path ;
     }
 }
