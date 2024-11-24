@@ -1,7 +1,6 @@
 import java.util.Objects;
 
-public class Pair<T1 , T2>{
-    public T1 first ;
+public class Pair<T1 extends Comparable<T1>, T2> implements Comparable<Pair<T1, T2>> {    public T1 first ;
     public T2 second ;
 
     Pair(T1 first , T2 second)
@@ -25,5 +24,10 @@ public class Pair<T1 , T2>{
     @Override
     public int hashCode() {
         return Objects.hash(first, second);
+    }
+
+    @Override
+    public int compareTo(Pair<T1, T2> other) {
+        return this.first.compareTo(other.first);
     }
 }

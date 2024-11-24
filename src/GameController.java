@@ -7,10 +7,12 @@ public class GameController {
     private View view ;
     private final Scanner in = new Scanner(System.in);
 
+    private Cell[][] initialBoard;
     public void startGame() {
         int size = takeBoardSize(in);
         String[][] board = takeBoard(in, size);
-        gameState = new GameState(size, board);
+        InitializeBoard(size , board);
+        gameState = new GameState(size, initialBoard);
         System.out.println("What kind of view do you prefer?");
         System.out.println("1) Console");
         System.out.println("2) GUI");
@@ -50,11 +52,42 @@ public class GameController {
                 break;
         }
     }
+    public void InitializeBoard(int size , String[][] initialGrid) {
+
+        initialBoard = new Cell[size][size] ;
+        for(int i = 0 ; i < size ; i++)
+        {
+            for(int j = 0 ; j < size ; j++)
+            {
+                char cell = initialGrid[i][j].charAt(0) ;
+                initialBoard[i][j] = new Cell() ;
+                if (Character.isUpperCase(cell)) {
+                    initialBoard[i][j].setDestinationColor(Character.toString(cell));
+                }
+                else if(Character.isLowerCase(cell))
+                {
+                    initialBoard[i][j].setCellColor(Character.toString(cell));
+                    if(initialGrid[i][j].length() == 2)
+                    {
+                        initialBoard[i][j].setDestinationColor(Character.toString(initialGrid[i][j].charAt(1)));
+                    }
+                }else if(cell == '#'){
+                    initialBoard[i][j].setCellColor("Black");
+                }else{
+                    initialBoard[i][j].setCellColor("Gray");
+                }
+                initialBoard[i][j] = initialBoard[i][j];
+            }
+        }
+
+    }
     public void runGameAsAI(){
         System.out.println("Which Algorithm you would like to use ?");
         System.out.println("1) BFS");
         System.out.println("2) Parallel BFS");
         System.out.println("3) DFS");
+        System.out.println("4) UCS");
+
 
         int choice = in.nextInt();
         in.nextLine(); // Consume the remaining newline
@@ -68,6 +101,9 @@ public class GameController {
             case 3:
                 algorithm = new Algo_DFS();
                 break;
+            case 4:
+                algorithm = new Algo_UCS();
+                break;
             default:
                 System.out.println("Invalid input, Defaulting the DFS");
                 algorithm = new Algo_DFS();
@@ -80,21 +116,16 @@ public class GameController {
         double durationInSeconds = duration / 1_000_000_000.0;
         System.out.println("Execution Time: " + durationInSeconds + " seconds");
         System.out.println("Number of moves: " + path.size());
-
+        System.out.println(path);
         path.forEach(move -> {
             try {
-                System.out.println(move);
-                gameState = gameState.playMove(move , true , view);
+                gameState = gameState.playMove(move , true , initialBoard, view);
                 view.display(gameState.get_current_board_shallow(), gameState.get_size());
-                Thread.sleep(200);
+                Thread.sleep(300);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         });
-
-
-
-
     }
     public void runGameAsUser()
     {
@@ -102,10 +133,10 @@ public class GameController {
         {
             while(!gameState.check_winning())
             {
+                System.out.println(gameState.coloredCells);
                 view.display(gameState.get_current_board_shallow(), gameState.get_size());
                 String move = player.get_move();
-                gameState = gameState.playMove(move , true , view);
-                view.display(gameState.get_current_board_shallow(), gameState.get_size());
+                gameState = gameState.playMove(move , true , initialBoard,  view);
             }
             System.out.print("Winner Winner Chicken Dinner !!!!\nCongrats for solving this puzzle");
 
@@ -114,7 +145,7 @@ public class GameController {
 
             ((ViewGUI) view).setMoveListener(move -> {
                 System.out.println("move = " + move);
-                gameState = gameState.playMove(move, true, view);
+                gameState = gameState.playMove(move, true, initialBoard, view);
                 view.display(gameState.get_current_board_shallow(), gameState.get_size());
 
 
