@@ -1,6 +1,7 @@
 import java.util.Objects;
 
-public class Pair<T1 extends Comparable<T1>, T2> implements Comparable<Pair<T1, T2>> {    public T1 first ;
+public class Pair<T1 extends Comparable<T1>, T2> implements Comparable<Pair<T1, T2>> {
+    public T1 first ;
     public T2 second ;
 
     Pair(T1 first , T2 second)

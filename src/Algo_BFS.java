@@ -3,7 +3,7 @@ import java.util.*;
 public class Algo_BFS implements Algorithm{
 
     @Override
-    public List<String> run(GameState gameState , View view) {
+    public List<String> run(GameState gameState) {
         Set<GameState> vis = new HashSet<>();
         Map<GameState, Pair<String, GameState>> parent = new HashMap<>();
         Deque<GameState> q = new ArrayDeque<>();

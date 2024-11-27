@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Algo_BFS_Parallel implements Algorithm {
 
     @Override
-    public List<String> run(GameState gameState, View view) {
+    public List<String> run(GameState gameState) {
         final Set<GameState> vis = ConcurrentHashMap.newKeySet();
         final Map<GameState, Pair<String, GameState>> parent = new ConcurrentHashMap<>();
         final Queue<GameState> q = new ConcurrentLinkedQueue<>();
