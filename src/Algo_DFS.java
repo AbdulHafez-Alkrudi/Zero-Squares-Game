@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Algo_DFS implements Algorithm{
     @Override
-    public List<String> run(GameState gameState , View view) {
+    public List<String> run(GameState gameState) {
         HashSet<GameState> vis = new HashSet<>();
         Map<GameState, Pair<String, GameState>> parent = new HashMap<>();
         Stack<GameState> stk = new Stack<>();

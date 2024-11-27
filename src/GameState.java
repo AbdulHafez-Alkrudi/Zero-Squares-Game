@@ -275,17 +275,6 @@ public class GameState {
     static public boolean every_player_has_goal(GameState state){
         Set<String> goals = new HashSet<>();
         int white = 0 ;
-        /*for(int i = 0 ; i < size ; i++)
-        {
-            for(int j = 0 ; j < size ; j++)
-            {
-                if(state.currentBoard[i][j].getDestinationColor().equals("W")){
-                    white++;
-                }else if(!state.currentBoard[i][j].getDestinationColor().isBlank()){
-                    goals.add(state.currentBoard[i][j].getDestinationColor());
-                }
-            }
-        }*/
         for(Pair<Integer, Integer> goal : state.destinationCells){
             int x = goal.first;
             int y = goal.second;
@@ -347,4 +336,9 @@ public class GameState {
         hash = sb.toString().hashCode();
         return hash;
     }
+
+    /*@Override
+    public int hashCode() {
+        return Objects.hash(coloredCells, destinationCells);
+    }*/
 }

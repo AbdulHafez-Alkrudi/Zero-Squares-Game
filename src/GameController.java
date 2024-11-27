@@ -86,8 +86,8 @@ public class GameController {
         System.out.println("1) BFS");
         System.out.println("2) Parallel BFS");
         System.out.println("3) DFS");
-        System.out.println("4) UCS");
-
+        System.out.println("4) DFS Recursive");
+        System.out.println("5) UCS");
 
         int choice = in.nextInt();
         in.nextLine(); // Consume the remaining newline
@@ -102,6 +102,9 @@ public class GameController {
                 algorithm = new Algo_DFS();
                 break;
             case 4:
+                algorithm = new Algo_DFS_Recursive();
+                break;
+            case 5:
                 algorithm = new Algo_UCS();
                 break;
             default:
@@ -110,7 +113,7 @@ public class GameController {
                 break;
         }
         long startTime = System.nanoTime();
-        List<String> path = algorithm.run(gameState, view);
+        List<String> path = algorithm.run(gameState);
         long endTime = System.nanoTime();
         long duration = endTime - startTime; // in nanoseconds
         double durationInSeconds = duration / 1_000_000_000.0;

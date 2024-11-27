@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Algo_UCS implements Algorithm{
     @Override
-    public List<String> run(GameState gameState, View view) {
+    public List<String> run(GameState gameState) {
 
         Map<GameState, Integer> cost = new HashMap<>();
         Map<GameState, Pair<String, GameState>> parent = new HashMap<>();
@@ -13,7 +13,7 @@ public class Algo_UCS implements Algorithm{
 
 
         parent.put(gameState, new Pair<>("stop", new GameState()));
-        cost.put(gameState, 1);
+        cost.put(gameState, 0);
         q.add(new Pair<>(0 , gameState));
 
         int Level = 0 ;
@@ -30,6 +30,12 @@ public class Algo_UCS implements Algorithm{
                 GameState current_state = temp.second;
                 int w = temp.first;
                 if(cost.get(current_state) < w) continue ;
+                if (current_state.check_winning()) {
+                    System.out.println("I've found I solution !!!!!!!!");
+                    gameState = current_state;
+                    solved = true;
+                    break;
+                }
                 List<Pair<String, GameState>> states = current_state.nextStates();
                 for (Pair<String, GameState> nextStatesPair : states) {
                     GameState nextState = nextStatesPair.second;
@@ -39,12 +45,7 @@ public class Algo_UCS implements Algorithm{
                         q.add(new Pair<>(w + 1 , nextState));
                         parent.put(nextState, new Pair<>(move, current_state));
 
-                        if (nextState.check_winning()) {
-                            System.out.println("I've found I solution !!!!!!!!");
-                            gameState = nextState;
-                            solved = true;
-                            break;
-                        }
+
                     }
 
                 }
