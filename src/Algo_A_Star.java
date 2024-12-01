@@ -1,6 +1,7 @@
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class Algo_UCS implements Algorithm{
+public class Algo_A_Star implements Algorithm{
     @Override
     public List<String> run(GameState gameState) {
 
@@ -41,7 +42,7 @@ public class Algo_UCS implements Algorithm{
                 for (Pair<String, GameState> nextStatesPair : states) {
                     GameState nextState = nextStatesPair.second;
                     String move = nextStatesPair.first;
-                    if (!cost.containsKey(nextState) || cost.get(nextState) > w + 1) {
+                    if (!cost.containsKey(nextState) || cost.get(nextState) > w + 1 + ManhattanDistanceAll(nextState)) {
                         cost.put(nextState, w + 1);
                         q.add(new Pair<>(w + 1 , nextState));
                         parent.put(nextState, new Pair<>(move, current_state));
@@ -60,6 +61,35 @@ public class Algo_UCS implements Algorithm{
         Collections.reverse(path);
         System.out.println("Number of tried grids to find the solution: " + cost.size());
         return path ;
+    }
+    private int ManhattanDistance(int x1 , int y1 , int x2, int y2){
+            return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+    }
+    private int ManhattanDistanceAll(GameState nextState) {
+        HashMap<String, Pair<Integer , Integer>> pos = new HashMap<>();
+
+        nextState.coloredCells.forEach(elm -> {
+            int x = elm.first ;
+            int y = elm.second;
+
+
+            if(!nextState.get_current_board_shallow()[x][y].getCellColor().equals("W"))
+                pos.put(nextState.get_current_board_shallow()[x][y].getCellColor().toUpperCase() , new Pair<>(x , y));
+        });
+        AtomicInteger cost = new AtomicInteger();
+        nextState.destinationCells.forEach(elm ->{
+            int x = elm.first ;
+            int y = elm.first ;
+
+            if(pos.containsKey(nextState.get_current_board_shallow()[x][y].getDestinationColor().toUpperCase())){
+                int x2 = pos.get(nextState.get_current_board_shallow()[x][y].getDestinationColor().toUpperCase()).first;
+                int y2 = pos.get(nextState.get_current_board_shallow()[x][y].getDestinationColor().toUpperCase()).second;
+                cost.set(ManhattanDistance(x, y, x2, y2));
+            }
+
+        });
+
+        return cost.get();
     }
 
 }

@@ -88,6 +88,8 @@ public class GameController {
         System.out.println("3) DFS");
         System.out.println("4) DFS Recursive");
         System.out.println("5) UCS");
+        System.out.println("6) A*");
+
 
         int choice = in.nextInt();
         in.nextLine(); // Consume the remaining newline
@@ -106,6 +108,9 @@ public class GameController {
                 break;
             case 5:
                 algorithm = new Algo_UCS();
+                break;
+            case 6:
+                algorithm = new Algo_A_Star();
                 break;
             default:
                 System.out.println("Invalid input, Defaulting the DFS");
