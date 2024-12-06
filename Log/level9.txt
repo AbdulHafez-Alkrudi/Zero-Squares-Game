@@ -1,0 +1,66 @@
+Level 9 is running:
+Algorithm: BFS
+Number of tried grids to find the solution: 86
+Execution Time: 0.0297479 seconds
+Number of Moves: 10
+Path: [up, right, down, right, down, right, down, right, up, left]
+Memory Usage: 2048.0 KB
+--------------------------------------------------------------------------------------------
+Level 9 is running:
+Algorithm: Parallel BFS
+Number of tried grids to find the solution: 98
+Execution Time: 0.0042955 seconds
+Number of Moves: 10
+Path: [up, right, down, right, down, right, down, right, up, left]
+Memory Usage: 16384.0 KB
+--------------------------------------------------------------------------------------------
+Level 9 is running:
+Algorithm: DFS
+Number of tried grids to find the solution: 46
+Execution Time: 0.0018638 seconds
+Number of Moves: 19
+Path: [right, down, right, down, left, up, right, down, right, down, right, down, right, up, left, down, right, up, left]
+Memory Usage: 16911.3359375 KB
+--------------------------------------------------------------------------------------------
+Level 9 is running:
+Algorithm: DFS Recursive
+Number of tried grids to find the solution: 89
+Execution Time: 0.001918 seconds
+Number of Moves: 36
+Path: [up, left, down, right, up, right, down, left, right, up, down, down, left, up, down, left, right, up, right, up, down, left, right, up, down, down, left, right, up, left, up, down, down, right, up, left]
+Memory Usage: 2048.0 KB
+--------------------------------------------------------------------------------------------
+Level 9 is running:
+Algorithm: UCS
+Number of tried grids to find the solution: 79
+Total Cost: 27
+Execution Time: 0.0010408 seconds
+Number of Moves: 10
+Path: [up, right, down, right, down, right, down, right, up, left]
+Memory Usage: 1801.9140625 KB
+--------------------------------------------------------------------------------------------
+Level 9 is running:
+Algorithm: A*
+Number of tried grids to find the solution: 52
+Total Cost: 27.0
+Execution Time: 0.0012823 seconds
+Number of Moves: 10
+Path: [up, right, down, right, down, right, down, right, up, left]
+Memory Usage: 1428.203125 KB
+--------------------------------------------------------------------------------------------
+Level 9 is running:
+Algorithm: Hill Climbing Simple
+Number of tried grids to find the solution: 3
+Execution Time: 7.76E-5 seconds
+Number of Moves: 2
+Path: [up, right]
+Memory Usage: 2048.0 KB
+--------------------------------------------------------------------------------------------
+Level 9 is running:
+Algorithm: Hill Climbing Steepest
+Number of tried grids to find the solution: 3
+Execution Time: 7.13E-5 seconds
+Number of Moves: 2
+Path: [up, right]
+Memory Usage: 0.0 KB
+--------------------------------------------------------------------------------------------

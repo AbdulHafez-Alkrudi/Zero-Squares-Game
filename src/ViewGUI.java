@@ -6,9 +6,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class ViewGUI implements View {
-    private JFrame frame;
-    private JPanel gridPanel;
-    private int gridSize;
+    private final JFrame frame;
+    private final JPanel gridPanel;
     private Consumer<String> moveListener;
     public ViewGUI() {
         frame = new JFrame("Zero Squares Game");
@@ -30,6 +29,8 @@ public class ViewGUI implements View {
                     case KeyEvent.VK_LEFT -> "left";
                     case KeyEvent.VK_RIGHT -> "right";
                     case KeyEvent.VK_ESCAPE -> "restart";
+                    case KeyEvent.VK_D -> "forward";
+                    case KeyEvent.VK_A -> "backward";
                     default -> null;
                 };
                 if (move != null && moveListener != null) {
@@ -55,12 +56,11 @@ public class ViewGUI implements View {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        this.gridSize = size;
         gridPanel.removeAll();
-        gridPanel.setLayout(new GridLayout(gridSize, gridSize));
+        gridPanel.setLayout(new GridLayout(size, size));
 
-        for (int row = 0; row < gridSize; row++) {
-            for (int col = 0; col < gridSize; col++) {
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
                 gridPanel.add(createCellPanel(grid[row][col]));
             }
         }

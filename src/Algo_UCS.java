@@ -1,8 +1,11 @@
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class Algo_UCS implements Algorithm{
     @Override
-    public List<String> run(GameState gameState) {
+    public List<String> run(GameState gameState, BufferedWriter logWriter) {
+
 
         Map<GameState, Integer> cost = new HashMap<>();
         Map<GameState, Pair<String, GameState>> parent = new HashMap<>();
@@ -40,16 +43,19 @@ public class Algo_UCS implements Algorithm{
                 for (Pair<String, GameState> nextStatesPair : states) {
                     GameState nextState = nextStatesPair.second;
                     String move = nextStatesPair.first;
-                    if (!cost.containsKey(nextState) || cost.get(nextState) > w + 1) {
-                        cost.put(nextState, w + 1);
-                        q.add(new Pair<>(w + 1 , nextState));
+                    if (!cost.containsKey(nextState) || cost.get(nextState) > w + nextState.cost) {
+                        cost.put(nextState, w + nextState.cost);
+                        q.add(new Pair<>(w + nextState.cost , nextState));
                         parent.put(nextState, new Pair<>(move, current_state));
-
-
                     }
-
                 }
             }
+        }
+        try {
+            logWriter.write("Number of tried grids to find the solution: " + cost.size()+ "\n");
+            logWriter.write("Total Cost: " + cost.get(gameState)+ "\n");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         while(!parent.get(gameState).first.equals("stop")){
             path.add(parent.get(gameState).first);
@@ -58,6 +64,8 @@ public class Algo_UCS implements Algorithm{
 
         Collections.reverse(path);
         System.out.println("Number of tried grids to find the solution: " + cost.size());
+
         return path ;
     }
+
 }

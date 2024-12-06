@@ -1,0 +1,66 @@
+Level 2 is running:
+Algorithm: BFS
+Number of tried grids to find the solution: 10
+Execution Time: 0.0130705 seconds
+Number of Moves: 4
+Path: [right, up, left, down]
+Memory Usage: 0.0 KB
+--------------------------------------------------------------------------------------------
+Level 2 is running:
+Algorithm: Parallel BFS
+Number of tried grids to find the solution: 10
+Execution Time: 0.0070039 seconds
+Number of Moves: 4
+Path: [right, up, left, down]
+Memory Usage: 16384.0 KB
+--------------------------------------------------------------------------------------------
+Level 2 is running:
+Algorithm: DFS
+Number of tried grids to find the solution: 8
+Execution Time: 0.0109005 seconds
+Number of Moves: 4
+Path: [right, up, left, down]
+Memory Usage: 16784.4375 KB
+--------------------------------------------------------------------------------------------
+Level 2 is running:
+Algorithm: DFS Recursive
+Number of tried grids to find the solution: 9
+Execution Time: 7.198E-4 seconds
+Number of Moves: 6
+Path: [up, down, right, up, left, down]
+Memory Usage: 0.0 KB
+--------------------------------------------------------------------------------------------
+Level 2 is running:
+Algorithm: UCS
+Number of tried grids to find the solution: 10
+Total Cost: 11
+Execution Time: 0.0045046 seconds
+Number of Moves: 4
+Path: [right, up, left, down]
+Memory Usage: 246.0859375 KB
+--------------------------------------------------------------------------------------------
+Level 2 is running:
+Algorithm: A*
+Number of tried grids to find the solution: 10
+Total Cost: 11.0
+Execution Time: 0.0021703 seconds
+Number of Moves: 4
+Path: [right, up, left, down]
+Memory Usage: 0.0 KB
+--------------------------------------------------------------------------------------------
+Level 2 is running:
+Algorithm: Hill Climbing Simple
+Number of tried grids to find the solution: 3
+Execution Time: 3.528E-4 seconds
+Number of Moves: 2
+Path: [down, right]
+Memory Usage: 0.0 KB
+--------------------------------------------------------------------------------------------
+Level 2 is running:
+Algorithm: Hill Climbing Steepest
+Number of tried grids to find the solution: 3
+Execution Time: 3.323E-4 seconds
+Number of Moves: 2
+Path: [down, right]
+Memory Usage: 0.0 KB
+--------------------------------------------------------------------------------------------
