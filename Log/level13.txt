@@ -1,0 +1,66 @@
+Level 13 is running:
+Algorithm: BFS
+Number of tried grids to find the solution: 612
+Execution Time: 0.0547916 seconds
+Number of Moves: 12
+Path: [left, down, up, right, right, down, left, up, right, up, right, down]
+Memory Usage: 10240.0 KB
+--------------------------------------------------------------------------------------------
+Level 13 is running:
+Algorithm: Parallel BFS
+Number of tried grids to find the solution: 769
+Execution Time: 0.0119992 seconds
+Number of Moves: 12
+Path: [left, down, up, right, right, down, left, up, right, up, right, down]
+Memory Usage: 18432.0 KB
+--------------------------------------------------------------------------------------------
+Level 13 is running:
+Algorithm: DFS
+Number of tried grids to find the solution: 218
+Execution Time: 0.0086181 seconds
+Number of Moves: 46
+Path: [right, left, up, right, right, left, up, right, down, right, down, left, left, right, up, right, down, left, left, right, up, right, down, left, left, up, right, right, down, left, down, left, down, right, up, right, down, left, up, right, right, down, right, up, right, up]
+Memory Usage: 19760.765625 KB
+--------------------------------------------------------------------------------------------
+Level 13 is running:
+Algorithm: DFS Recursive
+Number of tried grids to find the solution: 288
+Execution Time: 0.0034343 seconds
+Number of Moves: 80
+Path: [left, up, down, down, up, right, up, down, right, left, up, left, up, right, down, down, up, right, down, left, up, left, up, down, down, right, up, left, up, down, down, up, right, down, left, left, up, right, down, right, up, right, up, down, left, left, right, up, left, up, right, down, down, up, right, down, left, left, up, right, right, down, left, up, down, left, up, down, right, up, left, right, right, up, down, left, up, right, right, down]
+Memory Usage: 4096.0 KB
+--------------------------------------------------------------------------------------------
+Level 13 is running:
+Algorithm: UCS
+Number of tried grids to find the solution: 393
+Total Cost: 32
+Execution Time: 0.0081761 seconds
+Number of Moves: 13
+Path: [left, down, up, right, up, right, up, left, left, down, up, right, down]
+Memory Usage: 6144.0 KB
+--------------------------------------------------------------------------------------------
+Level 13 is running:
+Algorithm: A*
+Number of tried grids to find the solution: 207
+Total Cost: 32.0
+Execution Time: 0.0030747 seconds
+Number of Moves: 13
+Path: [left, down, up, right, up, right, up, left, left, down, up, right, down]
+Memory Usage: 4096.0 KB
+--------------------------------------------------------------------------------------------
+Level 13 is running:
+Algorithm: Hill Climbing Simple
+Number of tried grids to find the solution: 3
+Execution Time: 7.03E-5 seconds
+Number of Moves: 2
+Path: [left, down]
+Memory Usage: 0.0 KB
+--------------------------------------------------------------------------------------------
+Level 13 is running:
+Algorithm: Hill Climbing Steepest
+Number of tried grids to find the solution: 6
+Execution Time: 1.044E-4 seconds
+Number of Moves: 5
+Path: [right, up, right, up, left]
+Memory Usage: 0.0 KB
+--------------------------------------------------------------------------------------------

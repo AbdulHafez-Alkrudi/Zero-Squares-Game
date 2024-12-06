@@ -1,0 +1,66 @@
+Level 24 is running:
+Algorithm: BFS
+Number of tried grids to find the solution: 4300
+Execution Time: 0.1738535 seconds
+Number of Moves: 17
+Path: [right, up, right, right, right, up, left, down, down, right, up, left, up, down, left, left, up]
+Memory Usage: 75776.0 KB
+--------------------------------------------------------------------------------------------
+Level 24 is running:
+Algorithm: Parallel BFS
+Number of tried grids to find the solution: 5463
+Execution Time: 0.0608934 seconds
+Number of Moves: 17
+Path: [right, up, right, right, right, up, left, down, down, right, up, left, up, down, left, left, up]
+Memory Usage: 98304.0 KB
+--------------------------------------------------------------------------------------------
+Level 24 is running:
+Algorithm: DFS
+Number of tried grids to find the solution: 12766
+Execution Time: 1.1917996 seconds
+Number of Moves: 90
+Path: [right, right, right, right, up, right, down, left, left, down, right, right, right, right, up, right, down, left, left, down, right, right, right, right, up, right, down, left, left, down, right, right, up, right, right, left, down, right, left, down, right, up, left, down, right, right, right, up, right, down, left, left, right, down, left, down, right, right, up, right, down, left, down, right, up, right, down, left, down, right, up, right, down, left, left, right, down, left, down, left, right, up, right, right, left, right, down, left, up, right]
+Memory Usage: -178763.6171875 KB
+--------------------------------------------------------------------------------------------
+Level 24 is running:
+Algorithm: DFS Recursive
+Number of tried grids to find the solution: 8570
+Execution Time: 0.1560907 seconds
+Number of Moves: 36
+Path: [left, left, left, right, right, right, right, up, left, right, down, left, down, right, up, left, right, down, left, up, down, up, down, left, up, right, down, left, up, down, left, up, right, down, right, up]
+Memory Usage: 176128.0 KB
+--------------------------------------------------------------------------------------------
+Level 24 is running:
+Algorithm: UCS
+Number of tried grids to find the solution: 3464
+Total Cost: 64
+Execution Time: 0.05932 seconds
+Number of Moves: 17
+Path: [right, up, right, right, right, up, left, down, down, right, up, left, up, down, left, left, up]
+Memory Usage: 57344.0 KB
+--------------------------------------------------------------------------------------------
+Level 24 is running:
+Algorithm: A*
+Number of tried grids to find the solution: 345
+Total Cost: 64.0
+Execution Time: 0.0075063 seconds
+Number of Moves: 17
+Path: [right, up, right, right, right, up, left, down, down, right, up, left, up, down, left, left, up]
+Memory Usage: 6144.0 KB
+--------------------------------------------------------------------------------------------
+Level 24 is running:
+Algorithm: Hill Climbing Simple
+Number of tried grids to find the solution: 1
+Execution Time: 4.14E-5 seconds
+Number of Moves: 0
+Path: []
+Memory Usage: 0.0 KB
+--------------------------------------------------------------------------------------------
+Level 24 is running:
+Algorithm: Hill Climbing Steepest
+Number of tried grids to find the solution: 1
+Execution Time: 3.57E-5 seconds
+Number of Moves: 0
+Path: []
+Memory Usage: 0.0 KB
+--------------------------------------------------------------------------------------------

@@ -1,4 +1,5 @@
 import javax.rmi.ssl.SslRMIClientSocketFactory;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -10,7 +11,12 @@ import java.util.Objects;
 public class Main {
     public static void main(String[] args) {
         GameController game = new GameController();
-        game.startGame();
+        try {
+            game.startGame();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 }

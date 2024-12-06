@@ -1,12 +1,18 @@
 import java.util.*;
+import java.util.List;
 
+@SuppressWarnings("CopyConstructorMissesField")
 public class GameState {
 
 
     private int size ;
     private Integer hash;
-    private Cell[][] currentBoard;
+    public Cell[][] currentBoard;
     public List<Pair<Integer , Integer>> coloredCells , destinationCells;
+
+    // this attribute used for algorithms like UCS, A* to know its cost when I want to visit it
+    public int cost = 0 ;
+
     /*
     *  Cells Representation in the Grid:
     *  1- Blocked Cells: #
@@ -35,10 +41,12 @@ public class GameState {
         currentBoard = new Cell[size][size] ;
         for(int i = 0 ; i < size ; i++)
         {
+            //System.arraycopy(initialBoard[i], 0, currentBoard[i], 0, size);
             System.arraycopy(initialBoard[i], 0, currentBoard[i], 0, size);
         }
-        coloredCells = getColoredCells();
-        destinationCells = getDestinationCells();
+        this.coloredCells = this.getColoredCells();
+        this.destinationCells = this.getDestinationCells();
+        this.cost = 0 ;
     }
     public GameState(GameState other)
     {
@@ -54,9 +62,9 @@ public class GameState {
         coloredCells = new ArrayList<>(other.coloredCells);
         destinationCells = new ArrayList<>(other.destinationCells);
         this.size = other.size;
+        this.cost = other.cost;
     }
-    protected void restart_game(Cell[][] initial_board)
-    {
+    protected void restart_game(Cell[][] initial_board)  {
         for(int i = 0 ; i < size ; i++){
             for (int j = 0; j < size; j++) {
                 this.currentBoard[i][j] = new Cell(initial_board[i][j]);
@@ -73,8 +81,7 @@ public class GameState {
 
     // I'll give this function the current coordinates of the player, and the type of the move that I'll make and return
     // whether it's valid or not
-    public boolean check_move(int x , int y , String move)
-    {
+    public boolean check_move(int x , int y , String move)  {
         // here when the move isn't valid (I went out of the grid), I should restart the game:
         return switch (move) {
             case "up"    -> is_valid(x + dx[UP], y + dy[UP]);
@@ -87,8 +94,7 @@ public class GameState {
     }
 
     // This function returns the next coordinates according to a specific move:
-    public Pair<Integer, Integer> get_next_move(int x , int y , String move)
-    {
+    public Pair<Integer, Integer> get_next_move(int x , int y , String move)  {
         return switch (move) {
             case "up"    -> new Pair<>(x + dx[UP]    , y + dy[UP]);
             case "down"  -> new Pair<>(x + dx[DOWN]  , y + dy[DOWN]);
@@ -98,8 +104,7 @@ public class GameState {
         };
 
     }
-    public boolean check_winning()
-    {
+    public boolean check_winning()  {
         for(int i = 0 ; i < size ; i++)
         {
             for(int j = 0 ; j < size ; j++)
@@ -137,7 +142,7 @@ public class GameState {
         }
     }
 
-    private List<Pair<Integer, Integer>> getColoredCells() {
+    public List<Pair<Integer, Integer>> getColoredCells() {
         List<Pair<Integer, Integer>> cells = new ArrayList<>();
         Cell[][] board = get_current_board_shallow();
         int size = get_size();
@@ -150,7 +155,7 @@ public class GameState {
         }
         return cells;
     }
-    private List<Pair<Integer, Integer>> getDestinationCells() {
+    public List<Pair<Integer, Integer>> getDestinationCells() {
         List<Pair<Integer, Integer>> cells = new ArrayList<>();
         Cell[][] board = get_current_board_shallow();
         int size = get_size();
@@ -166,8 +171,7 @@ public class GameState {
     public GameState playMove(String move, boolean can_restart) {
         return playMove(move, can_restart,null,null);
     }
-    public GameState playMove(String move , boolean can_restart, Cell[][] initialBoard, View view)
-    {
+    public GameState playMove(String move , boolean can_restart, Cell[][] initialBoard, View view)  {
         if (move.equals("restart")) {
             if (view instanceof ViewGUI) {
                 ((ViewGUI) view).displayMessage("The Game will be restarted");
@@ -188,9 +192,8 @@ public class GameState {
         }
         GameState newGameState = new GameState(this);
         Cell[][] newBoard = newGameState.currentBoard;
-        List<Pair<Integer, Integer>> ColoredCells = new LinkedList<>();
-        for(Pair<Integer, Integer> cell : coloredCells)
-        {
+        Queue <Pair<Integer, Integer>> ColoredCells = new LinkedList<>();
+        for(Pair<Integer, Integer> cell : coloredCells)  {
             int x = cell.first ;
             int y = cell.second;
             if(!check_move(x , y , move)){
@@ -214,40 +217,40 @@ public class GameState {
                 ColoredCells.add(new Pair<>(x , y));
             }
         }
-        List<Pair<Integer, Integer>> newColoredCells = new LinkedList<>();
+        int cost = 0 ;
         while(!ColoredCells.isEmpty())
         {
-            newColoredCells.clear();
+
             boolean restart = false ;
-            for(Pair<Integer , Integer> cell : ColoredCells)
-            {
-                int x = cell.first , y = cell.second ;
-                // Here I should check if the move is invalid (if we make this move we will go out of the grid), I should restart the game
-                // else just make it
-                if(newGameState.check_move(x , y , move)){
-                    Pair<Integer, Integer> new_cell = get_next_move(x , y , move);
-                    int new_x = new_cell.first ;
-                    int new_y = new_cell.second ;
-                    // if the current color can't move, we'll ignore it the rest of the turn
-                    if(!newBoard[new_x][new_y].getCellColor().equals("Gray")) continue ;
-                    newBoard[new_x][new_y].setCellColor(newBoard[x][y].getCellColor());
-                    newBoard[x][y].setCellColor("Gray");
-                    // Checking If I'm currently at the destination:
-                    if(newBoard[new_x][new_y].arrived_to_destination())
-                    {
-                        newBoard[new_x][new_y].setCellColor("Gray");
-                        newBoard[new_x][new_y].setDestinationColor("");
-                        continue ;
-                    }
-                    else if(newBoard[new_x][new_y].getDestinationColor().equals("W")){
-                        newBoard[new_x][new_y].setDestinationColor(newBoard[new_x][new_y].getCellColor().toUpperCase());
-                    }
-                    newColoredCells.add(new Pair<>(new_x , new_y));
+            Pair<Integer, Integer> cell  = ColoredCells.poll();
+            int x = cell.first , y = cell.second ;
+            // Here I should check if the move is invalid (if we make this move we will go out of the grid), I should restart the game
+            // else just make it
+            if(newGameState.check_move(x , y , move)){
+
+
+                Pair<Integer, Integer> new_cell = get_next_move(x , y , move);
+                int new_x = new_cell.first ;
+                int new_y = new_cell.second ;
+                // if the current color can't move, we'll ignore it the rest of the turn
+                if(!newBoard[new_x][new_y].getCellColor().equals("Gray")) continue ;
+                cost++;
+                newBoard[new_x][new_y].setCellColor(newBoard[x][y].getCellColor());
+                newBoard[x][y].setCellColor("Gray");
+                // Checking If I'm currently at the destination:
+                if(newBoard[new_x][new_y].arrived_to_destination())
+                {
+                    newBoard[new_x][new_y].setCellColor("Gray");
+                    newBoard[new_x][new_y].setDestinationColor("");
+                    continue ;
                 }
-                else{
-                    restart = true ;
-                    break;
+                else if(newBoard[new_x][new_y].getDestinationColor().equals("W")){
+                    newBoard[new_x][new_y].setDestinationColor(newBoard[new_x][new_y].getCellColor().toUpperCase());
                 }
+                ColoredCells.add(new Pair<>(new_x , new_y));
+            }
+            else{
+                restart = true ;
             }
             if(restart) {
                 // Here the user is playing the game, and I'll restart the game for him/her
@@ -264,36 +267,13 @@ public class GameState {
                 // else I'm using nextStates function and I only need the valid next moves
                 return null ;
             }
-            if(newColoredCells.isEmpty())break;
-            ColoredCells = new ArrayList<>(newColoredCells);
         }
         newGameState.coloredCells = newGameState.getColoredCells();
         newGameState.destinationCells = newGameState.getDestinationCells();
+        newGameState.cost = cost ;
+//        newGameState.cost = 1 ;
+
         return newGameState ;
-    }
-
-    static public boolean every_player_has_goal(GameState state){
-        Set<String> goals = new HashSet<>();
-        int white = 0 ;
-        for(Pair<Integer, Integer> goal : state.destinationCells){
-            int x = goal.first;
-            int y = goal.second;
-
-            if(state.currentBoard[x][y].getDestinationColor().equals("W")){
-                white++;
-            }else{
-                goals.add((state.currentBoard[x][y].getDestinationColor().toLowerCase()));
-            }
-        }
-        for(Pair<Integer, Integer> player : state.coloredCells)
-        {
-            int x = player.first;
-            int y = player.second;
-            if(!goals.contains(state.currentBoard[x][y].getCellColor())){
-                white--;
-            }
-        }
-        return white >= 0 ;
     }
     public List<Pair<String, GameState>> nextStates() {
         List<Pair<String, GameState>> nextStates = new ArrayList<>();
@@ -301,7 +281,7 @@ public class GameState {
 
         for (String move : moves) {
             GameState newState = playMove(move, false);
-            if (newState != null && !Arrays.deepEquals(newState.get_current_board_shallow(), get_current_board_shallow()) && every_player_has_goal(newState)) {
+            if (newState != null && !Arrays.deepEquals(newState.get_current_board_shallow(), get_current_board_shallow())/* && Heuristic.every_player_has_goal(newState) != 1_000_000_000*/) {
                 nextStates.add(new Pair<>(move, newState));
             }
         }
