@@ -1,7 +1,7 @@
 Level 6 is running:
 Algorithm: BFS
 Number of tried grids to find the solution: 20
-Execution Time: 0.0109288 seconds
+Execution Time: 0.0053083 seconds
 Number of Moves: 7
 Path: [left, up, left, down, right, left, up]
 Memory Usage: 0.0 KB
@@ -9,7 +9,7 @@ Memory Usage: 0.0 KB
 Level 6 is running:
 Algorithm: Parallel BFS
 Number of tried grids to find the solution: 22
-Execution Time: 0.0022129 seconds
+Execution Time: 0.0026918 seconds
 Number of Moves: 7
 Path: [left, up, left, down, right, left, up]
 Memory Usage: 16384.0 KB
@@ -17,15 +17,15 @@ Memory Usage: 16384.0 KB
 Level 6 is running:
 Algorithm: DFS
 Number of tried grids to find the solution: 13
-Execution Time: 0.0013011 seconds
+Execution Time: 6.247E-4 seconds
 Number of Moves: 8
 Path: [left, left, up, right, right, down, left, up]
-Memory Usage: 16515.8125 KB
+Memory Usage: 16505.0859375 KB
 --------------------------------------------------------------------------------------------
 Level 6 is running:
 Algorithm: DFS Recursive
 Number of tried grids to find the solution: 22
-Execution Time: 3.107E-4 seconds
+Execution Time: 3.423E-4 seconds
 Number of Moves: 14
 Path: [left, up, left, up, right, down, left, left, up, right, right, down, up, left]
 Memory Usage: 0.0 KB
@@ -34,16 +34,25 @@ Level 6 is running:
 Algorithm: UCS
 Number of tried grids to find the solution: 21
 Total Cost: 26
-Execution Time: 2.481E-4 seconds
+Execution Time: 2.583E-4 seconds
 Number of Moves: 8
 Path: [left, left, up, right, right, down, up, left]
 Memory Usage: 0.0 KB
 --------------------------------------------------------------------------------------------
 Level 6 is running:
-Algorithm: A*
+Algorithm: A* Manhattan
 Number of tried grids to find the solution: 19
 Total Cost: 26.0
-Execution Time: 4.885E-4 seconds
+Execution Time: 5.759E-4 seconds
+Number of Moves: 8
+Path: [left, left, up, right, right, down, up, left]
+Memory Usage: 0.0 KB
+--------------------------------------------------------------------------------------------
+Level 6 is running:
+Algorithm: A* Advanced
+Number of tried grids to find the solution: 19
+Total Cost: 26.0
+Execution Time: 4.065E-4 seconds
 Number of Moves: 8
 Path: [left, left, up, right, right, down, up, left]
 Memory Usage: 0.0 KB
@@ -51,7 +60,7 @@ Memory Usage: 0.0 KB
 Level 6 is running:
 Algorithm: Hill Climbing Simple
 Number of tried grids to find the solution: 4
-Execution Time: 6.59E-5 seconds
+Execution Time: 6.37E-5 seconds
 Number of Moves: 3
 Path: [left, left, up]
 Memory Usage: 0.0 KB
@@ -59,7 +68,7 @@ Memory Usage: 0.0 KB
 Level 6 is running:
 Algorithm: Hill Climbing Steepest
 Number of tried grids to find the solution: 4
-Execution Time: 6.72E-5 seconds
+Execution Time: 5.87E-5 seconds
 Number of Moves: 3
 Path: [left, left, up]
 Memory Usage: 0.0 KB

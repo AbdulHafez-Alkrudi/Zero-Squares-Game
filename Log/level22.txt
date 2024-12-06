@@ -1,7 +1,7 @@
 Level 22 is running:
 Algorithm: BFS
 Number of tried grids to find the solution: 24
-Execution Time: 0.0010994 seconds
+Execution Time: 8.898E-4 seconds
 Number of Moves: 14
 Path: [right, right, up, left, left, down, left, up, right, down, up, left, down, left]
 Memory Usage: 0.0 KB
@@ -9,23 +9,23 @@ Memory Usage: 0.0 KB
 Level 22 is running:
 Algorithm: Parallel BFS
 Number of tried grids to find the solution: 26
-Execution Time: 0.0037378 seconds
+Execution Time: 0.0026639 seconds
 Number of Moves: 14
 Path: [right, right, up, left, left, down, left, up, right, down, up, left, down, left]
-Memory Usage: 16384.0 KB
+Memory Usage: 15324.7890625 KB
 --------------------------------------------------------------------------------------------
 Level 22 is running:
 Algorithm: DFS
 Number of tried grids to find the solution: 24
-Execution Time: 0.0011935 seconds
+Execution Time: 8.305E-4 seconds
 Number of Moves: 14
 Path: [right, right, up, left, left, down, left, up, right, down, up, left, down, left]
-Memory Usage: 16603.6875 KB
+Memory Usage: 16585.8046875 KB
 --------------------------------------------------------------------------------------------
 Level 22 is running:
 Algorithm: DFS Recursive
 Number of tried grids to find the solution: 25
-Execution Time: 2.271E-4 seconds
+Execution Time: 4.246E-4 seconds
 Number of Moves: 15
 Path: [right, right, up, left, left, down, left, up, left, right, down, up, left, down, left]
 Memory Usage: 0.0 KB
@@ -34,16 +34,25 @@ Level 22 is running:
 Algorithm: UCS
 Number of tried grids to find the solution: 26
 Total Cost: 37
-Execution Time: 4.592E-4 seconds
+Execution Time: 2.675E-4 seconds
 Number of Moves: 14
 Path: [right, right, up, left, left, down, left, up, right, down, up, left, down, left]
-Memory Usage: 0.0 KB
+Memory Usage: 2048.0 KB
 --------------------------------------------------------------------------------------------
 Level 22 is running:
-Algorithm: A*
+Algorithm: A* Manhattan
 Number of tried grids to find the solution: 25
 Total Cost: 37.0
-Execution Time: 4.139E-4 seconds
+Execution Time: 3.149E-4 seconds
+Number of Moves: 14
+Path: [right, right, up, left, left, down, left, up, right, down, up, left, down, left]
+Memory Usage: 2048.0 KB
+--------------------------------------------------------------------------------------------
+Level 22 is running:
+Algorithm: A* Advanced
+Number of tried grids to find the solution: 25
+Total Cost: 37.0
+Execution Time: 2.666E-4 seconds
 Number of Moves: 14
 Path: [right, right, up, left, left, down, left, up, right, down, up, left, down, left]
 Memory Usage: 0.0 KB
@@ -51,7 +60,7 @@ Memory Usage: 0.0 KB
 Level 22 is running:
 Algorithm: Hill Climbing Simple
 Number of tried grids to find the solution: 1
-Execution Time: 3.33E-5 seconds
+Execution Time: 1.94E-5 seconds
 Number of Moves: 0
 Path: []
 Memory Usage: 0.0 KB
@@ -59,7 +68,7 @@ Memory Usage: 0.0 KB
 Level 22 is running:
 Algorithm: Hill Climbing Steepest
 Number of tried grids to find the solution: 1
-Execution Time: 3.23E-5 seconds
+Execution Time: 2.24E-5 seconds
 Number of Moves: 0
 Path: []
 Memory Usage: 0.0 KB

@@ -116,12 +116,15 @@ public class GameController {
         System.out.println("0) All Algorithms");
         System.out.println("1) BFS");
         System.out.println("2) Parallel BFS");
+
         System.out.println("3) DFS");
         System.out.println("4) DFS Recursive");
         System.out.println("5) UCS");
-        System.out.println("6) A*");
-        System.out.println("7) Hill Climbing Simple");
-        System.out.println("8) Hill Climbing Steepest");
+        System.out.println("6) A* Manhattan");
+        System.out.println("7) A* Advanced");
+
+        System.out.println("8) Hill Climbing Simple");
+        System.out.println("9) Hill Climbing Steepest");
         int choice = in.nextInt();
         in.nextLine(); // Consume the remaining newline
 
@@ -149,14 +152,18 @@ public class GameController {
             run_ai_algorithm("UCS" , level );
         }
         if (choice == 0 || choice == 6) {
-            algorithm = new Algo_A_Star();
-            run_ai_algorithm("A*" , level);
+            algorithm = new Algo_A_star_Manhattan();
+            run_ai_algorithm("A* Manhattan" , level);
         }
         if (choice == 0 || choice == 7) {
+            algorithm = new Algo_A_Star_Advanced();
+            run_ai_algorithm("A* Advanced" , level);
+        }
+        if (choice == 0 || choice == 8) {
             algorithm = new Algo_Hill_Climbing_Simple();
             run_ai_algorithm("Hill Climbing Simple" , level);
         }
-        if (choice == 0 || choice == 8) {
+        if (choice == 0 || choice == 9) {
             algorithm = new Algo_Hill_Climbing_Steepest();
             run_ai_algorithm("Hill Climbing Steepest" , level);
         }
