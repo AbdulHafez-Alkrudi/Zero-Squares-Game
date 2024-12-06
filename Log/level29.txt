@@ -1,49 +1,58 @@
 Level 29 is running:
 Algorithm: BFS
 Number of tried grids to find the solution: 12261
-Execution Time: 0.3337805 seconds
+Execution Time: 0.2778617 seconds
 Number of Moves: 18
 Path: [left, up, right, up, right, up, left, up, right, up, down, right, down, left, down, right, up, left]
-Memory Usage: 20864.0 KB
+Memory Usage: 16048.0 KB
 --------------------------------------------------------------------------------------------
 Level 29 is running:
 Algorithm: Parallel BFS
 Number of tried grids to find the solution: 13074
-Execution Time: 0.2743537 seconds
+Execution Time: 0.0998037 seconds
 Number of Moves: 18
 Path: [left, up, right, up, right, up, left, up, right, up, down, right, down, left, down, right, up, left]
-Memory Usage: -315392.0 KB
+Memory Usage: 276480.0 KB
 --------------------------------------------------------------------------------------------
 Level 29 is running:
 Algorithm: DFS
 Number of tried grids to find the solution: 1765
-Execution Time: 0.0962925 seconds
+Execution Time: 0.0306334 seconds
 Number of Moves: 220
 Path: [right, left, down, right, down, right, left, up, right, down, right, left, up, right, down, right, up, left, down, right, down, left, up, right, down, right, left, up, up, right, down, right, left, down, left, right, up, left, up, right, down, right, left, down, right, up, left, down, left, down, right, down, right, up, up, left, left, up, up, right, down, right, left, down, left, up, right, down, right, left, up, up, right, down, right, left, down, left, up, left, up, right, down, right, left, down, right, left, up, left, up, right, down, right, down, left, up, right, down, right, up, left, down, right, down, right, left, up, left, up, right, down, right, down, left, up, right, down, left, down, up, left, up, right, up, right, down, left, up, right, right, down, right, down, left, down, up, left, up, left, right, up, left, down, right, down, left, down, up, right, down, right, left, up, left, up, right, up, right, down, right, down, right, left, up, down, right, left, up, right, left, down, up, left, up, left, up, left, down, right, down, left, down, right, up, right, down, right, up, left, left, down, right, up, left, left, up, left, up, right, up, right, up, left, up, right, up, down, right, down, left, down, up, right, down, left, down, right, up, left]
-Memory Usage: 48472.921875 KB
+Memory Usage: 50266.3046875 KB
 --------------------------------------------------------------------------------------------
 Level 29 is running:
 Algorithm: DFS Recursive
 Number of tried grids to find the solution: 625
-Execution Time: 0.0083475 seconds
+Execution Time: 0.0092033 seconds
 Number of Moves: 190
 Path: [up, down, left, up, down, down, right, up, down, left, up, up, down, down, right, up, left, up, up, down, down, left, up, up, down, up, left, down, down, left, up, down, right, up, left, down, right, up, down, right, up, left, up, down, right, up, left, up, down, left, up, left, down, right, up, down, right, up, right, up, down, right, up, down, left, up, left, right, up, left, up, left, up, down, right, up, left, down, down, left, up, down, right, up, left, down, right, up, right, up, left, down, left, right, up, down, left, right, up, down, left, up, left, right, up, down, left, up, down, left, up, left, right, up, left, up, down, left, right, up, right, up, down, left, up, down, down, up, left, right, up, down, left, up, right, up, left, up, left, down, left, right, up, left, right, right, up, down, down, up, left, right, down, left, up, down, down, up, left, up, left, up, down, left, right, up, left, down, right, up, right, up, right, up, down, up, left, up, left, up, right, down, left, up, left, right, down, right, up, left]
-Memory Usage: 10240.0 KB
+Memory Usage: 12288.0 KB
 --------------------------------------------------------------------------------------------
 Level 29 is running:
 Algorithm: UCS
 Number of tried grids to find the solution: 10417
 Total Cost: 51
-Execution Time: 0.2767149 seconds
+Execution Time: 0.261723 seconds
 Number of Moves: 20
 Path: [left, up, right, up, left, up, right, up, down, left, up, right, down, right, down, left, down, right, up, left]
-Memory Usage: -7717.9609375 KB
+Memory Usage: -4784.140625 KB
 --------------------------------------------------------------------------------------------
 Level 29 is running:
-Algorithm: A*
+Algorithm: A* Manhattan
+Number of tried grids to find the solution: 2269
+Total Cost: 51.0
+Execution Time: 0.0278501 seconds
+Number of Moves: 20
+Path: [left, up, right, up, left, up, right, up, down, left, up, right, down, right, down, left, down, right, up, left]
+Memory Usage: 34816.0 KB
+--------------------------------------------------------------------------------------------
+Level 29 is running:
+Algorithm: A* Advanced
 Number of tried grids to find the solution: 3413
 Total Cost: 51.0
-Execution Time: 0.0673345 seconds
+Execution Time: 0.0598515 seconds
 Number of Moves: 20
 Path: [left, up, right, up, left, up, right, up, down, left, up, right, down, right, down, left, down, right, up, left]
 Memory Usage: 55296.0 KB
@@ -51,7 +60,7 @@ Memory Usage: 55296.0 KB
 Level 29 is running:
 Algorithm: Hill Climbing Simple
 Number of tried grids to find the solution: 7
-Execution Time: 1.97E-4 seconds
+Execution Time: 2.286E-4 seconds
 Number of Moves: 6
 Path: [left, down, right, up, down, left]
 Memory Usage: 0.0 KB
@@ -59,7 +68,7 @@ Memory Usage: 0.0 KB
 Level 29 is running:
 Algorithm: Hill Climbing Steepest
 Number of tried grids to find the solution: 2
-Execution Time: 7.08E-5 seconds
+Execution Time: 5.56E-5 seconds
 Number of Moves: 1
 Path: [right]
 Memory Usage: 0.0 KB

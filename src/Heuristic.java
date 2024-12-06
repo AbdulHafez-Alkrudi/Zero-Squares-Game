@@ -4,12 +4,6 @@ import java.util.Set;
 public final class Heuristic {
     public static double get(GameState gameState)
     {
-        /*double cost = every_player_has_goal(gameState) ;
-        if(cost == 1_000_000_000) return cost ;
-*/
-        double cost = hasRepeatedGoals(gameState);
-        if(cost == 1_000_000_000) return cost ;
-
         return manhattan(gameState) + min_no_players_for_a_player_to_reach_a_goal(gameState);
     }
 
@@ -32,6 +26,8 @@ public final class Heuristic {
     }
     public static double manhattan(GameState gameState)
     {
+        int cost = hasRepeatedGoals(gameState) ;
+        if(cost != 0) return cost ;
         return Algorithm.ManhattanDistanceAll(gameState) ;
     }
     /*public static double every_player_has_goal(GameState state){

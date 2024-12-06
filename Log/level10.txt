@@ -1,7 +1,7 @@
 Level 10 is running:
 Algorithm: BFS
 Number of tried grids to find the solution: 300
-Execution Time: 0.0447805 seconds
+Execution Time: 0.0347742 seconds
 Number of Moves: 44
 Path: [up, left, up, left, up, left, down, left, down, left, up, right, down, left, up, right, up, right, up, right, down, right, down, right, down, right, down, left, down, left, up, right, up, left, up, left, up, left, down, left, down, right, up, right]
 Memory Usage: 6144.0 KB
@@ -9,41 +9,50 @@ Memory Usage: 6144.0 KB
 Level 10 is running:
 Algorithm: Parallel BFS
 Number of tried grids to find the solution: 301
-Execution Time: 0.0088691 seconds
+Execution Time: 0.0095409 seconds
 Number of Moves: 44
-Path: [up, left, up, left, up, left, down, left, down, left, up, right, down, left, up, right, up, right, down, right, up, right, down, right, down, right, down, left, down, left, up, right, up, left, up, left, up, left, down, left, down, right, up, right]
-Memory Usage: 18432.0 KB
+Path: [up, left, up, left, up, left, down, left, down, left, up, right, down, left, up, right, up, right, up, right, down, right, down, right, down, right, down, left, down, left, up, right, up, left, up, left, up, left, down, left, down, right, up, right]
+Memory Usage: 16384.0 KB
 --------------------------------------------------------------------------------------------
 Level 10 is running:
 Algorithm: DFS
 Number of tried grids to find the solution: 232
-Execution Time: 0.0066316 seconds
+Execution Time: 0.0034482 seconds
 Number of Moves: 72
 Path: [down, right, up, right, down, left, up, right, up, right, up, right, down, right, up, left, up, left, down, left, down, right, up, left, up, left, down, left, down, right, up, left, up, right, up, right, up, left, down, left, up, right, up, right, down, right, down, right, up, right, down, right, down, right, down, left, down, left, up, right, up, left, up, left, up, left, down, left, down, right, up, right]
-Memory Usage: 20491.6171875 KB
+Memory Usage: 20585.03125 KB
 --------------------------------------------------------------------------------------------
 Level 10 is running:
 Algorithm: DFS Recursive
 Number of tried grids to find the solution: 267
-Execution Time: 0.004917 seconds
+Execution Time: 0.0045814 seconds
 Number of Moves: 111
 Path: [up, down, left, up, right, up, down, left, right, up, left, up, down, left, up, left, up, left, down, left, up, down, left, up, down, down, right, up, down, left, up, right, up, down, right, up, left, up, right, up, left, right, up, left, down, left, up, right, up, right, up, down, left, up, down, left, up, down, right, up, down, left, up, left, right, up, down, left, right, up, down, left, up, right, up, left, right, up, left, up, left, right, down, right, down, left, right, down, left, up, down, left, up, right, up, left, up, left, up, left, down, left, down, left, up, down, right, up, right, up, right]
-Memory Usage: 5339.5390625 KB
+Memory Usage: 4096.0 KB
 --------------------------------------------------------------------------------------------
 Level 10 is running:
 Algorithm: UCS
 Number of tried grids to find the solution: 300
 Total Cost: 103
-Execution Time: 0.0094045 seconds
+Execution Time: 0.0049263 seconds
 Number of Moves: 44
 Path: [up, left, up, left, up, left, down, left, down, left, up, right, down, left, up, right, up, right, down, right, up, right, down, right, down, right, down, left, down, left, up, right, up, left, up, left, up, left, down, left, down, right, up, right]
+Memory Usage: 6040.015625 KB
+--------------------------------------------------------------------------------------------
+Level 10 is running:
+Algorithm: A* Manhattan
+Number of tried grids to find the solution: 296
+Total Cost: 103.0
+Execution Time: 0.0059618 seconds
+Number of Moves: 44
+Path: [up, left, up, left, up, left, down, left, down, left, up, right, down, left, up, right, up, right, up, right, down, right, down, right, down, right, down, left, down, left, up, right, up, left, up, left, up, left, down, left, down, right, up, right]
 Memory Usage: 6144.0 KB
 --------------------------------------------------------------------------------------------
 Level 10 is running:
-Algorithm: A*
+Algorithm: A* Advanced
 Number of tried grids to find the solution: 296
 Total Cost: 103.0
-Execution Time: 0.009903 seconds
+Execution Time: 0.0063333 seconds
 Number of Moves: 44
 Path: [up, left, up, left, up, left, down, left, down, left, up, right, down, left, up, right, up, right, up, right, down, right, down, right, down, right, down, left, down, left, up, right, up, left, up, left, up, left, down, left, down, right, up, right]
 Memory Usage: 6144.0 KB
@@ -51,7 +60,7 @@ Memory Usage: 6144.0 KB
 Level 10 is running:
 Algorithm: Hill Climbing Simple
 Number of tried grids to find the solution: 5
-Execution Time: 1.141E-4 seconds
+Execution Time: 9.59E-5 seconds
 Number of Moves: 4
 Path: [up, left, up, left]
 Memory Usage: 0.0 KB
@@ -59,8 +68,8 @@ Memory Usage: 0.0 KB
 Level 10 is running:
 Algorithm: Hill Climbing Steepest
 Number of tried grids to find the solution: 5
-Execution Time: 1.54E-4 seconds
+Execution Time: 9.2E-5 seconds
 Number of Moves: 4
 Path: [up, left, up, left]
-Memory Usage: 2048.0 KB
+Memory Usage: 0.0 KB
 --------------------------------------------------------------------------------------------

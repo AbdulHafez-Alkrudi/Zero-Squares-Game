@@ -2,7 +2,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.*;
 
-public class Algo_A_Star implements Algorithm{
+public class Algo_A_star_Manhattan implements Algorithm{
 
     @Override
     public List<String> run(GameState gameState, BufferedWriter logWriter) {
@@ -45,7 +45,7 @@ public class Algo_A_Star implements Algorithm{
                 for (Pair<String, GameState> nextStatesPair : states) {
                     GameState nextState = nextStatesPair.second;
                     String move = nextStatesPair.first;
-                    double heuristic = Heuristic.get(nextState);
+                    double heuristic = Heuristic.manhattan(nextState);
                     if (!cost.containsKey(nextState) || cost.get(nextState) > w + nextState.cost + heuristic) {
                         cost.put(nextState, w + nextState.cost + heuristic);
                         q.add(new Pair<>(w + nextState.cost + heuristic , new Pair(w + nextState.cost, nextState)));
@@ -72,38 +72,5 @@ public class Algo_A_Star implements Algorithm{
 
         return path ;
     }
-   /* private int ManhattanDistance(int x1 , int y1 , int x2, int y2){
-            return Math.abs(x1 - x2) + Math.abs(y1 - y2);
-    }
-    private int ManhattanDistanceAll(GameState nextState) {
-        HashMap<String, Pair<Integer , Integer>> pos = new HashMap<>();
-
-        nextState.destinationCells = nextState.getDestinationCells();
-        for (Pair<Integer, Integer> destinationCell : nextState.destinationCells) {
-            int x = destinationCell.first;
-            int y = destinationCell.second;
-            System.out.print(nextState.get_current_board_shallow()[x][y].getDestinationColor() + " ");
-            pos.put(nextState.get_current_board_shallow()[x][y].getDestinationColor().toUpperCase(), new Pair<>(x, y));
-        }
-        System.out.println();
-        int cost = 0 ;
-        List<Pair<Integer, Integer>> colored = nextState.getColoredCells();
-        for (Pair<Integer, Integer> elm : colored) {
-            int x = elm.first;
-            int y = elm.second;
-            System.out.print(nextState.get_current_board_shallow()[x][y].getCellColor() + " ");
-            if (pos.containsKey(nextState.get_current_board_shallow()[x][y].getCellColor().toUpperCase())) {
-                int x2 = pos.get(nextState.get_current_board_shallow()[x][y].getCellColor().toUpperCase()).first;
-                int y2 = pos.get(nextState.get_current_board_shallow()[x][y].getCellColor().toUpperCase()).second;
-                cost += ManhattanDistance(x, y, x2, y2);
-            }else{
-                int x2 = pos.get("W").first;
-                int y2 = pos.get("w").second;
-                cost += ManhattanDistance(x, y, x2, y2);
-            }
-        }
-        System.out.println(cost);
-        return cost;
-    }*/
 
 }

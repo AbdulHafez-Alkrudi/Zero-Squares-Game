@@ -1,57 +1,66 @@
 Level 20 is running:
 Algorithm: BFS
 Number of tried grids to find the solution: 3562
-Execution Time: 0.1801516 seconds
+Execution Time: 0.1094542 seconds
 Number of Moves: 13
 Path: [down, up, left, up, right, up, left, left, down, left, up, right, down]
-Memory Usage: 38912.0 KB
+Memory Usage: 36864.0 KB
 --------------------------------------------------------------------------------------------
 Level 20 is running:
 Algorithm: Parallel BFS
 Number of tried grids to find the solution: 4775
-Execution Time: 0.058316 seconds
+Execution Time: 0.1743234 seconds
 Number of Moves: 13
 Path: [down, left, right, up, left, left, up, left, down, left, up, right, down]
-Memory Usage: 59392.0 KB
+Memory Usage: -523228.7890625 KB
 --------------------------------------------------------------------------------------------
 Level 20 is running:
 Algorithm: DFS
 Number of tried grids to find the solution: 328
-Execution Time: 0.0114785 seconds
+Execution Time: 0.0035359 seconds
 Number of Moves: 89
 Path: [right, right, left, down, right, up, right, down, left, left, down, right, up, right, right, down, right, down, right, left, down, right, up, left, down, right, up, left, down, left, up, right, right, left, down, right, up, right, down, left, left, down, right, up, right, right, down, right, down, right, left, up, left, down, right, up, right, right, down, left, down, right, up, right, down, left, left, up, right, right, down, right, down, right, left, down, left, up, left, down, right, down, left, up, right, down, right, up, left]
-Memory Usage: 20480.0 KB
+Memory Usage: 20245.8984375 KB
 --------------------------------------------------------------------------------------------
 Level 20 is running:
 Algorithm: DFS Recursive
 Number of tried grids to find the solution: 47
-Execution Time: 0.0015153 seconds
+Execution Time: 4.37E-4 seconds
 Number of Moves: 24
 Path: [up, down, up, left, up, down, left, up, down, right, up, left, down, left, up, right, up, left, down, left, up, right, down, right]
-Memory Usage: 0.0 KB
+Memory Usage: 2048.0 KB
 --------------------------------------------------------------------------------------------
 Level 20 is running:
 Algorithm: UCS
 Number of tried grids to find the solution: 2572
 Total Cost: 36
-Execution Time: 0.0414852 seconds
+Execution Time: 0.0233867 seconds
 Number of Moves: 14
 Path: [down, left, left, up, right, up, left, left, down, left, up, right, down, right]
-Memory Usage: 26624.0 KB
+Memory Usage: 24576.0 KB
 --------------------------------------------------------------------------------------------
 Level 20 is running:
-Algorithm: A*
+Algorithm: A* Manhattan
+Number of tried grids to find the solution: 452
+Total Cost: 36.0
+Execution Time: 0.0060546 seconds
+Number of Moves: 15
+Path: [down, left, left, up, right, up, left, left, down, left, right, up, right, down, right]
+Memory Usage: 4096.0 KB
+--------------------------------------------------------------------------------------------
+Level 20 is running:
+Algorithm: A* Advanced
 Number of tried grids to find the solution: 718
 Total Cost: 36.0
-Execution Time: 0.021852 seconds
+Execution Time: 0.0087552 seconds
 Number of Moves: 14
 Path: [down, left, left, up, right, up, left, left, down, left, up, right, down, right]
-Memory Usage: 10240.0 KB
+Memory Usage: 8192.0 KB
 --------------------------------------------------------------------------------------------
 Level 20 is running:
 Algorithm: Hill Climbing Simple
 Number of tried grids to find the solution: 2
-Execution Time: 5.434E-4 seconds
+Execution Time: 4.11E-5 seconds
 Number of Moves: 1
 Path: [up]
 Memory Usage: 0.0 KB
@@ -59,7 +68,7 @@ Memory Usage: 0.0 KB
 Level 20 is running:
 Algorithm: Hill Climbing Steepest
 Number of tried grids to find the solution: 2
-Execution Time: 6.958E-4 seconds
+Execution Time: 4.59E-5 seconds
 Number of Moves: 1
 Path: [up]
 Memory Usage: 0.0 KB
